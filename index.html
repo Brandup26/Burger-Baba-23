@@ -7,11 +7,11 @@
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="طلب أونلاين">
+    <meta name="apple-mobile-web-app-title" content="برجر بابا">
     <link rel="apple-touch-icon" href="images/logggo.jpg">
     <link class="brand-logo-img" rel="apple-touch-icon" href="images/logggo.jpg">
-    <link rel="manifest" href="manifest.json">
     
+    <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#d35400">
 
@@ -42,7 +42,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; transition: background 0.3s, color 0.3s; }
         body { background-color: var(--bg); color: var(--main-text); line-height: 1.6; overflow-x: hidden; }
 
-        /* --- شاشة التحميل الافتتاحية المميزة والأنميشن الكريتيف --- */
+        /* --- شاشة التحميل الافتتاحية والأنميشن الكريتيف --- */
         #splash-screen {
           position: fixed; top: 0; left: 0; width: 100%; height: 100%;
           background: linear-gradient(135deg, var(--white) 0%, var(--bg) 100%); z-index: 9999;
@@ -51,34 +51,20 @@
           opacity: 1;
         }
         
-        .loader-content { 
-          text-align: center; 
-          padding: 0 20px; 
-        }
+        .loader-content { text-align: center; padding: 0 20px; }
 
         .logo-wrapper {
-          position: relative;
-          width: 155px; height: 155px;
-          margin: 0 auto 25px auto;
-          border-radius: 42px;
-          overflow: hidden;
-          box-shadow: 0 25px 50px rgba(0,0,0,0.18);
-          background: #fff;
-          transform: scale(0.3) rotate(-15deg);
-          opacity: 0;
-          animation: creativeLogoEntrance 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, 
-                    gentlePulse 2.5s infinite ease-in-out 1.4s;
+          position: relative; width: 155px; height: 155px; margin: 0 auto 25px auto;
+          border-radius: 42px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.18); background: #fff;
+          transform: scale(0.3) rotate(-15deg); opacity: 0;
+          animation: creativeLogoEntrance 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, gentlePulse 2.5s infinite ease-in-out 1.4s;
         }
-
         .loader-logo-big { width: 100%; height: 100%; object-fit: cover; display: block; }
         
         .logo-wrapper::after {
-          content: '';
-          position: absolute; top: 0; left: -150%;
-          width: 60%; height: 100%;
+          content: ''; position: absolute; top: 0; left: -150%; width: 60%; height: 100%;
           background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
-          transform: skewX(-25deg);
-          animation: shine 2.2s infinite ease-in-out 1.2s;
+          transform: skewX(-25deg); animation: shine 2.2s infinite ease-in-out 1.2s;
         }
         
         @keyframes creativeLogoEntrance {
@@ -86,12 +72,7 @@
           70% { transform: scale(1.08) rotate(5deg); opacity: 0.9; filter: blur(0); }
           100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
-
-        @keyframes shine {
-          0% { left: -150%; }
-          50%, 100% { left: 150%; }
-        }
-
+        @keyframes shine { 0% { left: -150%; } 50%, 100% { left: 150%; } }
         @keyframes gentlePulse {
           0%, 100% { transform: scale(1); box-shadow: 0 25px 50px rgba(0,0,0,0.18); }
           50% { transform: scale(1.04); box-shadow: 0 30px 60px rgba(211, 84, 0, 0.25); }
@@ -99,18 +80,13 @@
 
         .loader-text { 
           font-weight: 800; color: var(--accent); font-size: 2.5rem; margin-bottom: 5px; letter-spacing: -0.5px;
-          opacity: 0; transform: translateY(20px);
-          animation: fadeUpIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.6s forwards;
+          opacity: 0; transform: translateY(20px); animation: fadeUpIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.6s forwards;
         }
         .loader-slogan { 
           font-size: 1.2rem; color: var(--desc-text); font-weight: 700; opacity: 0;
-          transform: translateY(15px);
-          animation: fadeUpIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.9s forwards;
+          transform: translateY(15px); animation: fadeUpIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.9s forwards;
         }
-        
-        @keyframes fadeUpIn {
-          to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeUpIn { to { opacity: 1; transform: translateY(0); } }
         
         .loading-bar { width: 160px; height: 5px; background: rgba(0,0,0,0.06); margin: 30px auto 0 auto; border-radius: 10px; overflow: hidden; position: relative; }
         .loading-bar span { display: block; width: 0; height: 100%; background: linear-gradient(90deg, var(--accent), #e67e22); animation: progress 4s cubic-bezier(0.1, 0.8, 0.2, 1) forwards; }
@@ -119,38 +95,20 @@
         .img-load-status { font-size: 0.75rem; color: var(--desc-text); font-weight: 700; margin-top: 8px; display: block; }
         .splash-hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
 
-        /* --- الهيدر والقائمة العلويين --- */
-        .sticky-top-container {
-          position: sticky; top: 0; z-index: 1000;
-          background: var(--header-bg); box-shadow: 0 2px 15px rgba(0,0,0,0.06);
-        }
-
-        header { 
-          display: flex; flex-direction: column; align-items: center;
-          padding: 8px 0 6px 0; border-bottom: 0.5px solid rgba(0,0,0,0.04);
-        }
-
+        /* --- الهيدر العلوي --- */
+        .sticky-top-container { position: sticky; top: 0; z-index: 1000; background: var(--header-bg); box-shadow: 0 2px 15px rgba(0,0,0,0.06); }
+        header { display: flex; flex-direction: column; align-items: center; padding: 8px 0 6px 0; border-bottom: 0.5px solid rgba(0,0,0,0.04); }
         .header-top { width: 100%; display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 4px; }
         
-        .header-logo-container {
-          width: 90px; height: 90px; 
-          border-radius: 22px; background: white;
-          padding: 2px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden;
-        }
+        .header-logo-container { width: 90px; height: 90px; border-radius: 22px; background: white; padding: 2px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; }
         .header-logo { width: 100%; height: 100%; border-radius: 20px; object-fit: cover; }
 
         .theme-toggle {
-          position: absolute; right: 15px; top: 25px; 
-          width: 38px; height: 38px; background: var(--bg); border-radius: 10px;
-          display: flex; align-items: center; justify-content: center; cursor: pointer;
-          font-size: 1rem; border: none; color: var(--main-text);
+          position: absolute; right: 15px; top: 25px; width: 38px; height: 38px; background: var(--bg); border-radius: 10px;
+          display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; border: none; color: var(--main-text);
         }
-
         .cart-trigger-container { position: absolute; left: 15px; top: 25px; }
-        .cart-trigger {
-          width: 38px; height: 38px; background: var(--bg); border-radius: 10px;
-          display: flex; align-items: center; justify-content: center; position: relative;
-        }
+        .cart-trigger { width: 38px; height: 38px; background: var(--bg); border-radius: 10px; display: flex; align-items: center; justify-content: center; position: relative; }
         .cart-trigger.shake { animation: cartShake 0.5s ease-in-out; }
         @keyframes cartShake {
           0%, 100% { transform: scale(1) rotate(0deg); }
@@ -159,25 +117,17 @@
         }
         
         .badge {
-          position: absolute; top: -4px; right: -4px; background: #ff3b30;
-          color: white; font-size: 9px; font-weight: 800; width: 18px; height: 18px;
-          border-radius: 50%; display: flex; align-items: center; justify-content: center;
-          border: 2px solid white; transform: scale(0); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          position: absolute; top: -4px; right: -4px; background: #ff3b30; color: white; font-size: 9px; font-weight: 800; width: 18px; height: 18px;
+          border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid white; transform: scale(0); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .badge.show { transform: scale(1); }
 
-        .header-bottom-addr { 
-          text-align: center; width: 100%; padding: 4px 15px 0 15px; 
-          display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 4px; flex-wrap: wrap;
-        }
+        .header-bottom-addr { text-align: center; width: 100%; padding: 4px 15px 0 15px; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 4px; flex-wrap: wrap; }
         .addr-tag { color: var(--address-tag); font-weight: 800; font-size: 0.72rem; display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
         .brand-addr { font-size: 0.72rem; color: var(--main-text); font-weight: 700; text-align: center; line-height: 1.4; }
 
         /* شريط التنقل بين الأقسام */
-        .category-nav {
-          display: flex; overflow-x: auto; white-space: nowrap; padding: 10px 15px; gap: 18px;
-          scrollbar-width: none; background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-        }
+        .category-nav { display: flex; overflow-x: auto; white-space: nowrap; padding: 10px 15px; gap: 18px; scrollbar-width: none; background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
         .category-nav::-webkit-scrollbar { display: none; }
         .cat-item { display: flex; flex-direction: column; align-items: center; min-width: 75px; cursor: pointer; }
         
@@ -186,37 +136,28 @@
         .cat-item.active .cat-img-box { border-color: var(--accent); transform: scale(1.05); }
         .cat-item span { font-size: 0.75rem; font-weight: 800; color: var(--desc-text); margin-top: 5px; text-align: center; white-space: normal; word-break: keep-all; }
 
-        .menu-list { padding: 12px; max-width: 600px; margin: auto; min-height: 200px; }
+        .menu-list { padding: 12px; max-width: 600px; margin: auto; min-height: 220px; }
         
-        /* رسالة العروض الفارغة */
+        /* تصميم ظريف وجذاب عند عدم وجود العروض */
         .no-offers-container {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 40px 20px; text-align: center; background: var(--white); border-radius: 22px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02); margin-top: 15px;
-            animation: premiumEntrance 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            padding: 45px 20px; text-align: center; background: var(--white); border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); margin-top: 15px;
+            animation: cardEntrance 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
-        .no-offers-icon { font-size: 3rem; margin-bottom: 12px; animation: bounceGently 2s infinite ease-in-out; }
-        .no-offers-text { font-size: 1.15rem; font-weight: 800; color: var(--accent); margin-bottom: 4px; }
-        .no-offers-subtext { font-size: 0.85rem; color: var(--desc-text); font-weight: 600; }
+        .no-offers-icon { font-size: 3.5rem; margin-bottom: 12px; animation: smoothBounce 2.2s infinite ease-in-out; }
+        .no-offers-text { font-size: 1.2rem; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+        .no-offers-subtext { font-size: 0.85rem; color: var(--desc-text); font-weight: 700; }
 
-        @keyframes bounceGently {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
+        @keyframes smoothBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes cardEntrance { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
         /* كروت الوجبات */
         .food-card {
-          background: var(--white); border-radius: 22px; margin-bottom: 12px; display: flex;
-          padding: 12px; gap: 12px; align-items: flex-start; box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-          position: relative; overflow: hidden;
+          background: var(--white); border-radius: 22px; margin-bottom: 12px; display: flex; padding: 12px; gap: 12px; align-items: flex-start; box-shadow: 0 2px 10px rgba(0,0,0,0.03); position: relative; overflow: hidden;
         }
-        
         .food-card.out-of-stock { opacity: 0.6; filter: grayscale(0.4); }
-        .out-of-stock-badge {
-            position: absolute; top: 12px; left: -35px; background: #ff3b30; color: white;
-            font-size: 0.68rem; font-weight: 800; padding: 4px 35px; transform: rotate(-45deg);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2); text-align: center; width: 130px; z-index: 3;
-        }
+        .out-of-stock-badge { position: absolute; top: 12px; left: -35px; background: #ff3b30; color: white; font-size: 0.68rem; font-weight: 800; padding: 4px 35px; transform: rotate(-45deg); box-shadow: 0 2px 5px rgba(0,0,0,0.2); text-align: center; width: 130px; z-index: 3; }
 
         .item-img-box { width: 90px; height: 90px; border-radius: 18px; overflow: hidden; background: #e5e5ea; flex-shrink: 0; margin-top: 4px; }
         .item-img-box img { width: 100%; height: 100%; object-fit: cover; }
@@ -233,45 +174,23 @@
         .price-row { display: flex; justify-content: space-between; align-items: center; margin-top: auto; width: 100%; position: relative; }
         .food-price { font-weight: 800; color: var(--accent); font-size: 1.05rem; }
         
-        .add-btn { 
-          background: var(--accent); color: white; border: none; width: 36px; height: 36px; border-radius: 50%; 
-          font-size: 1.4rem; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; z-index: 2;
-        }
+        .add-btn { background: var(--accent); color: white; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.4rem; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; z-index: 2; }
         .add-btn:disabled { background: #8e8e93; cursor: not-allowed; }
         
         .added-notice {
-          position: absolute; left: 46px; bottom: 2px;
-          background: linear-gradient(135deg, rgba(46, 204, 113, 0.95), rgba(39, 174, 96, 0.95));
-          color: white; font-size: 0.72rem; font-weight: 800; padding: 6px 14px; border-radius: 12px;
-          box-shadow: 0 4px 15px rgba(46, 204, 113, 0.35); display: flex; align-items: center; gap: 4px;
-          opacity: 0; transform: scale(0.6) translateY(5px); pointer-events: none; z-index: 5;
-          backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.15);
-          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          position: absolute; left: 46px; bottom: 2px; background: linear-gradient(135deg, rgba(46, 204, 113, 0.95), rgba(39, 174, 96, 0.95)); color: white; font-size: 0.72rem; font-weight: 800; padding: 6px 14px; border-radius: 12px; box-shadow: 0 4px 15px rgba(46, 204, 113, 0.35); display: flex; align-items: center; gap: 4px; opacity: 0; transform: scale(0.6) translateY(5px); pointer-events: none; z-index: 5; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.15); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .added-notice.show { opacity: 1; transform: scale(1) translateY(0); }
 
-        .fly-item {
-          position: fixed; z-index: 9999; pointer-events: none;
-          width: 30px; height: 30px; background: var(--accent);
-          color: white; border-radius: 50%; display: flex;
-          align-items: center; justify-content: center; font-size: 15px;
-          transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
-        }
+        .fly-item { position: fixed; z-index: 9999; pointer-events: none; width: 30px; height: 30px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1); }
 
         /* --- Footer --- */
-        .restaurant-footer {
-          padding: 30px 20px; text-align: center; background: var(--white);
-          border-top: 1px solid rgba(0,0,0,0.05); margin-top: 20px;
-        }
+        .restaurant-footer { padding: 30px 20px; text-align: center; background: var(--white); border-top: 1px solid rgba(0,0,0,0.05); margin-top: 20px; }
         .footer-phones { margin-bottom: 12px; }
         .footer-phones a { display: block; color: var(--accent); text-decoration: none; font-weight: 800; font-size: 1.1rem; margin: 5px 0; }
         
         .location-btn-container { margin: 15px 0 20px 0; }
-        .location-btn {
-            display: inline-flex; align-items: center; gap: 8px; background: #0a84ff; color: white;
-            text-decoration: none; padding: 12px 24px; border-radius: 14px; font-weight: 700;
-            font-size: 0.9rem; box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3); transition: 0.3s;
-        }
+        .location-btn { display: inline-flex; align-items: center; gap: 8px; background: #0a84ff; color: white; text-decoration: none; padding: 12px 24px; border-radius: 14px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3); transition: 0.3s; }
         .location-btn:active { transform: scale(0.96); box-shadow: 0 2px 6px rgba(10, 132, 255, 0.2); }
 
         .footer-rights { font-size: 0.8rem; color: var(--main-text); font-weight: 600; margin-bottom: 5px; }
@@ -282,9 +201,7 @@
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; display: none; justify-content: center; align-items: flex-end; }
         .modal-content { background: var(--white); width: 100%; max-width: 500px; padding: 25px; border-radius: 30px 30px 0 0; max-height: 90vh; overflow-y: auto; color: var(--main-text); }
         
-        .cart-item-card {
-          display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(0,0,0,0.04); border-radius: 18px; margin-bottom: 10px;
-        }
+        .cart-item-card { display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(0,0,0,0.04); border-radius: 18px; margin-bottom: 10px; }
         .cart-item-img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; }
         .cart-item-info { flex: 1; }
         .cart-item-name { font-weight: 700; font-size: 0.9rem; color: var(--main-text); }
@@ -292,17 +209,12 @@
         .cart-item-price { color: var(--accent); font-weight: 800; font-size: 0.85rem; display: block; margin-top: 2px; }
         .remove-btn { color: #ff3b30; font-weight: 800; font-size: 0.75rem; cursor: pointer; padding: 5px; }
 
-        /* تبويبات نوع الطلب في السلة */
         .order-type-tabs { display: flex; background: rgba(0,0,0,0.05); padding: 4px; border-radius: 12px; margin: 15px 0; gap: 4px; }
         .type-tab-btn { flex: 1; border: none; padding: 11px; font-weight: 800; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-family: 'Cairo', sans-serif; transition: 0.2s; }
         .type-tab-btn.active { background: var(--accent); color: white; }
         .type-tab-btn:not(.active) { background: transparent; color: var(--main-text); }
 
-        /* صندوق الفاتورة */
-        .invoice-box {
-            margin: 20px 0; padding: 16px; background: rgba(211, 84, 0, 0.06); border-radius: 18px;
-            display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem;
-        }
+        .invoice-box { margin: 20px 0; padding: 16px; background: rgba(211, 84, 0, 0.06); border-radius: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem; }
         .invoice-row { display: flex; justify-content: space-between; align-items: center; }
         .invoice-row.grand-total { border-top: 1px dashed rgba(0,0,0,0.15); padding-top: 8px; margin-top: 4px; font-size: 1.05rem; color: var(--accent); }
 
@@ -462,17 +374,8 @@
 
         function preloadAllImages() {
             const imageUrls = [];
-            // تجميع الأقسام الفريدة مع التأكد من إدراج "العروض" دائماً كقسم رئيسي أولاً إذا كنت تفضل ذلك
+            // الاعتماد الكامل والديناميكي على الأقسام المكتوبة داخل الشيت بدون أي تعديل خارجي
             let uniqueCats = [...new Set(menuData.map(item => item.category))];
-            
-            // نتحقق إن كان قسم العروض مضاف في الداتا الفردية للشيت أم لا، وإن لم يتواجد نضيفه يدوياً
-            if (!uniqueCats.includes("العروض")) {
-                uniqueCats.unshift("العروض"); 
-            } else {
-                // لو موجود، نجعله في بداية الأقسام دائماً للفت انتباه الزائر
-                uniqueCats = uniqueCats.filter(c => c !== "العروض");
-                uniqueCats.unshift("العروض");
-            }
 
             uniqueCats.forEach(cat => imageUrls.push(`${IMAGES_PATH}${cat}.jpg`));
             menuData.forEach(item => imageUrls.push(item.img));
@@ -528,13 +431,13 @@
             
             const filteredItems = menuData.filter(i => i.category === cat);
             
-            // منطق ذكي للتعامل مع قسم العروض في حال كان فارغاً تماماً في الشيت
+            // لو المستخدم اختار أو فتح قسم مكتوب عليه "العروض" ولكنه كان فارغاً تماماً في الشيت
             if (cat === "العروض" && filteredItems.length === 0) {
                 document.getElementById('menuList').innerHTML = `
                     <div class="no-offers-container">
                         <div class="no-offers-icon">🎁</div>
-                        <div class="no-offers-text">لا يوجد عروض متاحة حالياً</div>
-                        <div class="no-offers-subtext">تابعنا باستمرار للاستمتاع بأقوى المفاجآت والخصومات!</div>
+                        <div class="no-offers-text">لا يوجد عروض متاحة في الوقت الحالي</div>
+                        <div class="no-offers-subtext">تابعنا باستمرار للاستمتاع بأقوى المفاجآت والخصومات الفاخرة!</div>
                     </div>
                 `;
                 return;
@@ -692,7 +595,7 @@
                     <div class="cart-item-info">
                         <span class="cart-item-name">${item.name}</span>
                         ${detailsText ? `<span class="cart-item-details">${detailsText}</span>` : ''}
-                        <span class="cart-item-price">${item.price} ج.م</span>
+                        <span class="cart-item-price">${item.price} j.m</span>
                     </div>
                     <span class="remove-btn" onclick="removeFromCart(${idx})">حذف</span>
                 </div>`;
