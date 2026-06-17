@@ -358,12 +358,10 @@
         </div>
     </footer>
 
-    <!-- مودال السلة المطور مع أزرار تحديد نوع الطلب -->
     <div class="modal" id="cartModal" onclick="if(event.target==this) toggleCart(false)">
         <div class="modal-content">
             <h2 style="margin-bottom: 20px;">طلباتك</h2>
             
-            <!-- أزرار اختيار نوع الطلب المضافة حديثاً -->
             <div class="order-type-container">
                 <button type="button" id="btnDelivery" class="type-btn active" onclick="changeOrderType('delivery')">🛵 توصيل للمنزل</button>
                 <button type="button" id="btnPickup" class="type-btn" onclick="changeOrderType('pickup')">📦 استلام من المطعم</button>
@@ -396,12 +394,14 @@
     </div>
 
     <script>
-        // التعديل الرئيسي لربط السيرفس ووركر الجديد sw-v2.js وكسر كاش النسخ القديمة فوراً
+        // كود تنظيف فوري لكسر وإلغاء أي سيرفس ووركر قديم متخزن في جهاز العميل أو الزبائن
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw-v2.js?v=3')
-                .then(reg => console.log('App PWA Ready to Install!', reg))
-                .catch(err => console.log('PWA Setup Error', err));
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister().then(function(boolean) {
+                        console.log('Old Service Worker cleared:', boolean);
+                    });
+                }
             });
         }
 
