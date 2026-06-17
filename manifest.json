@@ -1,0 +1,22 @@
+{
+  "name": "برجر بابا | المنيو الرسمي",
+  "short_name": "برجر بابا",
+  "description": "اطلب برجر بابا اونلاين - الطعم اللي صاحي معاك 24 ساعة",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f2f2f7",
+  "theme_color": "#d35400",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "images/logggo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "images/logggo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
