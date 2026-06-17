@@ -2,15 +2,15 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-color=1.0, user-scalable=no">
     <title>برجر بابا | المنيو الرسمي</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="برجر بابا">
-    <link rel="apple-touch-icon" href="images/logggo.jpg">
-    <link class="brand-logo-img" rel="apple-touch-icon" href="images/logggo.jpg">
-    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/logggo.jpg?v=2">
+    <link class="brand-logo-img" rel="apple-touch-icon" href="images/logggo.jpg?v=2">
+    <link rel="manifest" href="manifest.json?v=2">
     
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#d35400">
@@ -304,7 +304,7 @@
     <div id="splash-screen">
         <div class="loader-content">
             <div class="logo-wrapper">
-                <img src="./images/logggo.jpg" class="loader-logo-big" onerror="this.src='images/logggo.jpg'">
+                <img src="./images/logggo.jpg?v=2" class="loader-logo-big" onerror="this.src='images/logggo.jpg?v=2'">
             </div>
             <h2 class="loader-text">برجر بابا</h2>
             <p class="loader-slogan">الطعم اللي صاحي معاك 24 ساعة 🍔</p>
@@ -318,7 +318,7 @@
             <div class="header-top">
                 <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
                 <div class="header-logo-container">
-                    <img src="./images/logggo.jpg" class="header-logo" onerror="this.src='images/logggo.jpg'">
+                    <img src="./images/logggo.jpg?v=2" class="header-logo" onerror="this.src='images/logggo.jpg?v=2'">
                 </div>
                 <div class="cart-trigger-container">
                     <div class="cart-trigger" onclick="toggleCart(true)" id="cartBtn">
@@ -398,7 +398,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
+                navigator.serviceWorker.register('./sw.js?v=2')
                 .then(reg => console.log('App PWA Ready to Install!', reg))
                 .catch(err => console.log('PWA Setup Error', err));
             });
@@ -448,7 +448,7 @@
                         priceMedium: parseFloat(col[4]?.trim()) || 0, 
                         priceLarge: parseFloat(col[5]?.trim()) || 0,  
                         priceCombo: parseFloat(col[6]?.trim()) || 0,  
-                        img: `${IMAGES_PATH}${col[2]?.trim()}.jpg`
+                        img: `${IMAGES_PATH}${col[2]?.trim()}.jpg?v=2`
                     };
                 }).filter(i => i.nameAr);
                 
@@ -463,7 +463,7 @@
         function preloadAllImages() {
             const imageUrls = [];
             const uniqueCats = [...new Set(menuData.map(item => item.category))];
-            uniqueCats.forEach(cat => imageUrls.push(`${IMAGES_PATH}${cat}.jpg`));
+            uniqueCats.forEach(cat => imageUrls.push(`${IMAGES_PATH}${cat}.jpg?v=2`));
             menuData.forEach(item => imageUrls.push(item.img));
             
             if (imageUrls.length === 0) { isImagesPreloaded = true; return; }
@@ -504,7 +504,7 @@
             const uniqueCats = [...new Set(menuData.map(item => item.category))];
             document.getElementById('catNav').innerHTML = uniqueCats.map((cat, idx) => `
                 <div class="cat-item ${idx === 0 ? 'active' : ''}" onclick="filterCat('${cat}', this)">
-                    <div class="cat-img-box"><img src="${IMAGES_PATH}${cat}.jpg" onerror="this.src='${IMAGES_PATH}default.jpg'"></div>
+                    <div class="cat-img-box"><img src="${IMAGES_PATH}${cat}.jpg?v=2" onerror="this.src='${IMAGES_PATH}default.jpg'"></div>
                     <span>${cat}</span>
                 </div>
             `).join('');
@@ -632,7 +632,6 @@
             }, 700);
         }
 
-        // دالة تغيير نوع الطلب وتعديل الأسعار وحقل العنوان بناءً عليه
         function changeOrderType(type) {
             currentOrderType = type;
             const btnDelivery = document.getElementById('btnDelivery');
@@ -644,12 +643,12 @@
             if(type === 'delivery') {
                 btnDelivery.classList.add('active');
                 btnPickup.classList.remove('active');
-                uAddrField.style.display = 'block'; // إظهار حقل العنوان
+                uAddrField.style.display = 'block'; 
                 deliveryPriceValue.innerText = `${DELIVERY_FEE} ج.م`;
             } else {
                 btnDelivery.classList.remove('active');
                 btnPickup.classList.add('active');
-                uAddrField.style.display = 'none'; // إخفاء حقل العنوان
+                uAddrField.style.display = 'none'; 
                 deliveryPriceValue.innerText = `0 ج.م`;
             }
             updateCart();
@@ -678,7 +677,6 @@
                 </div>`;
             }).join('');
             
-            // حساب الإجمالي بناءً على خيار التوصيل أو الاستلام
             let currentFee = (currentOrderType === 'delivery') ? DELIVERY_FEE : 0;
             let grandTotal = subtotal > 0 ? (subtotal + currentFee) : 0;
             
@@ -712,7 +710,6 @@
             const p = document.getElementById('uPhone').value.trim();
             const a = document.getElementById('uAddr').value.trim();
             
-            // حماية البيانات: لو توصيل يبقى العنوان إجباري، لو استلام مش مهم
             if(!n || !p || (currentOrderType === 'delivery' && !a) || cart.length === 0) {
                 return alert("يرجى إكمال البيانات واختيار الأصناف");
             }
