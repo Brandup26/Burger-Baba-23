@@ -15,8 +15,6 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#d35400">
 
-    <!-- مكتبة أيقونات FontAwesome الاحترافية لضمان ثبات الشكل -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
@@ -159,7 +157,7 @@
         .addr-tag { color: var(--address-tag); font-weight: 800; font-size: 0.72rem; display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
         .brand-addr { font-size: 0.72rem; color: var(--main-text); font-weight: 700; text-align: center; line-height: 1.3; }
 
-        /* شريط الأقسام */
+        /* شريط الأقسام الثابت المدمج */
         .category-nav {
           display: flex; overflow-x: auto; white-space: nowrap; padding: 10px 15px; gap: 18px;
           scrollbar-width: none; background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -228,6 +226,33 @@
           transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
+        /* --- الأزرار الجديدة لخيار الاستلام جوه السلة --- */
+        .order-type-container {
+            display: flex;
+            background: rgba(0,0,0,0.05);
+            padding: 4px;
+            border-radius: 14px;
+            margin-bottom: 15px;
+            gap: 4px;
+        }
+        .type-btn {
+            flex: 1;
+            border: none;
+            padding: 10px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            background: transparent;
+            color: var(--main-text);
+            transition: 0.2s ease;
+        }
+        .type-btn.active {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 10px rgba(211, 84, 0, 0.2);
+        }
+
         /* --- Footer --- */
         .restaurant-footer {
           padding: 30px 20px; text-align: center; background: var(--white);
@@ -252,39 +277,6 @@
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; display: none; justify-content: center; align-items: flex-end; }
         .modal-content { background: var(--white); width: 100%; max-width: 500px; padding: 25px; border-radius: 30px 30px 0 0; max-height: 90vh; overflow-y: auto; color: var(--main-text); }
         
-        /* 🚀 ستايل التابات الجديد والانسيابي ونظام الأزرار الحديث للتوصيل والاستلام */
-        .order-tabs-container {
-            display: flex;
-            background: rgba(0, 0, 0, 0.05);
-            padding: 4px;
-            border-radius: 14px;
-            margin-bottom: 20px;
-        }
-        body.dark-mode .order-tabs-container {
-            background: rgba(255, 255, 255, 0.06);
-        }
-        .tab-btn {
-            flex: 1;
-            border: none;
-            background: transparent;
-            padding: 12px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: var(--main-text);
-            cursor: pointer;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.25s ease;
-        }
-        .tab-btn.active {
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 4px 10px rgba(211, 84, 0, 0.25);
-        }
-
         .cart-item-card {
           display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(0,0,0,0.04); border-radius: 18px; margin-bottom: 10px;
         }
@@ -331,7 +323,7 @@
                 <div class="cart-trigger-container">
                     <div class="cart-trigger" onclick="toggleCart(true)" id="cartBtn">
                         <span class="badge" id="cartBadge">0</span>
-                        <span style="font-size: 1.2rem;"><i class="fa-solid fa-basket-shopping"></i></span>
+                        <span style="font-size: 1.3rem;">🛒</span>
                     </div>
                 </div>
             </div>
@@ -366,19 +358,15 @@
         </div>
     </footer>
 
-    <!-- مودال السلة الذكي المحدث بنظام اختيار نوع التوصيل -->
+    <!-- مودال السلة المطور مع أزرار تحديد نوع الطلب -->
     <div class="modal" id="cartModal" onclick="if(event.target==this) toggleCart(false)">
         <div class="modal-content">
-            <h2 style="margin-bottom: 15px;"><i class="fa-solid fa-cart-shopping"></i> طلباتك</h2>
+            <h2 style="margin-bottom: 20px;">طلباتك</h2>
             
-            <!-- أزرار التوصيل والاستلام الاحترافية والانسيابية -->
-            <div class="order-tabs-container">
-                <button type="button" class="tab-btn active" id="deliveryTab" onclick="changeOrderType('delivery')">
-                    <i class="fa-solid fa-motorcycle"></i> توصيل للمنزل
-                </button>
-                <button type="button" class="tab-btn" id="pickupTab" onclick="changeOrderType('pickup')">
-                    <i class="fa-solid fa-shop"></i> استلام من المطعم
-                </button>
+            <!-- أزرار اختيار نوع الطلب المضافة حديثاً -->
+            <div class="order-type-container">
+                <button type="button" id="btnDelivery" class="type-btn active" onclick="changeOrderType('delivery')">🛵 توصيل للمنزل</button>
+                <button type="button" id="btnPickup" class="type-btn" onclick="changeOrderType('pickup')">📦 استلام من المطعم</button>
             </div>
 
             <div id="cartItemsList"></div>
@@ -388,24 +376,22 @@
                     <span>المجموع الفرعي:</span>
                     <span id="subtotalAmount">0 ج.م</span>
                 </div>
-                <!-- صف التوصيل مضاف له id للتحكم في إخفائه وإظهاره -->
                 <div class="invoice-row" id="deliveryFeeRow">
                     <span>🛵 خدمة التوصيل:</span>
-                    <span>40 ج.م</span>
+                    <span id="deliveryPriceValue">40 ج.م</span>
                 </div>
                 <div class="invoice-row grand-total">
                     <b>الإجمالي الكلي:</b>
-                    <b id="totalAmount">0 ج.م</b>
+                    <b id="totalAmount">40 ج.م</b>
                 </div>
             </div>
 
             <div class="user-fields">
                 <input type="text" id="uName" placeholder="الاسم بالكامل">
                 <input type="tel" id="uPhone" placeholder="رقم الموبايل">
-                <!-- حقل العنوان مضاف له id للتحكم في إخفائه وإظهاره -->
                 <input type="text" id="uAddr" placeholder="العنوان بالتفصيل">
             </div>
-            <button class="submit-btn" onclick="sendToWA()">تأكيد الطلب عبر واتساب <i class="fa-brands fa-whatsapp"></i></button>
+            <button class="submit-btn" onclick="sendToWA()">تأكيد الطلب عبر واتساب</button>
         </div>
     </div>
 
@@ -424,8 +410,7 @@
         let menuData = [], cart = [];
         let isMenuLoaded = false;
         let isImagesPreloaded = false;
-        // متغير عالمي لتحديد خيار الطلب الافتراضي (توصيل)
-        let currentOrderType = 'delivery'; 
+        let currentOrderType = 'delivery'; // المتغير الجديد للتحكم في نوع الطلب الحالي
 
         setTimeout(checkAndDismissSplash, 4000);
 
@@ -647,27 +632,27 @@
             }, 700);
         }
 
-        // 🚀 دالة التبديل الاحترافية الجديدة بين التوصيل والاستلام للتحكم في الواجهات والفاتورة
+        // دالة تغيير نوع الطلب وتعديل الأسعار وحقل العنوان بناءً عليه
         function changeOrderType(type) {
             currentOrderType = type;
-            
-            const deliveryTab = document.getElementById('deliveryTab');
-            const pickupTab = document.getElementById('pickupTab');
-            const deliveryFeeRow = document.getElementById('deliveryFeeRow');
+            const btnDelivery = document.getElementById('btnDelivery');
+            const btnPickup = document.getElementById('btnPickup');
             const uAddrField = document.getElementById('uAddr');
+            const deliveryFeeRow = document.getElementById('deliveryFeeRow');
+            const deliveryPriceValue = document.getElementById('deliveryPriceValue');
 
-            if (type === 'delivery') {
-                deliveryTab.classList.add('active');
-                pickupTab.classList.remove('active');
-                deliveryFeeRow.style.display = 'flex'; // إظهار رسوم التوصيل
-                uAddrField.style.display = 'block';   // إظهار حقل العنوان
+            if(type === 'delivery') {
+                btnDelivery.classList.add('active');
+                btnPickup.classList.remove('active');
+                uAddrField.style.display = 'block'; // إظهار حقل العنوان
+                deliveryPriceValue.innerText = `${DELIVERY_FEE} ج.م`;
             } else {
-                pickupTab.classList.add('active');
-                deliveryTab.classList.remove('active');
-                deliveryFeeRow.style.display = 'none'; // إخفاء رسوم التوصيل نهائياً
-                uAddrField.style.display = 'none';   // إخفاء حقل العنوان نهائياً
+                btnDelivery.classList.remove('active');
+                btnPickup.classList.add('active');
+                uAddrField.style.display = 'none'; // إخفاء حقل العنوان
+                deliveryPriceValue.innerText = `0 ج.م`;
             }
-            updateCart(); // إعادة حساب الفاتورة فوراً بناءً على الوضع الجديد
+            updateCart();
         }
 
         function updateCart() {
@@ -693,9 +678,9 @@
                 </div>`;
             }).join('');
             
-            // حساب الإجمالي بناءً على نوع الطلب المختار حالياً
-            let shippingCost = (currentOrderType === 'delivery') ? DELIVERY_FEE : 0;
-            let grandTotal = subtotal > 0 ? (subtotal + shippingCost) : 0;
+            // حساب الإجمالي بناءً على خيار التوصيل أو الاستلام
+            let currentFee = (currentOrderType === 'delivery') ? DELIVERY_FEE : 0;
+            let grandTotal = subtotal > 0 ? (subtotal + currentFee) : 0;
             
             document.getElementById('subtotalAmount').innerText = `${subtotal} ج.م`;
             document.getElementById('totalAmount').innerText = `${grandTotal} ج.م`;
@@ -722,37 +707,36 @@
             if (modal.style.display === 'flex') { modal.style.display = 'none'; }
         });
 
-        // دالة إرسال الرسالة للواتساب المحدثة لتدعم خيار الاستلام والتوصيل بشكل منسق ومحمي
         function sendToWA() {
             const n = document.getElementById('uName').value.trim();
             const p = document.getElementById('uPhone').value.trim();
             const a = document.getElementById('uAddr').value.trim();
             
-            // شروط التحقق الذكية: لو اخترنا توصيل لازم يكتب عنوان، لو استلام مش مهم العنوان
+            // حماية البيانات: لو توصيل يبقى العنوان إجباري، لو استلام مش مهم
             if(!n || !p || (currentOrderType === 'delivery' && !a) || cart.length === 0) {
                 return alert("يرجى إكمال البيانات واختيار الأصناف");
             }
             
             let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
-            let shippingCost = (currentOrderType === 'delivery') ? DELIVERY_FEE : 0;
-            let grandTotal = subtotal + shippingCost;
+            let currentFee = (currentOrderType === 'delivery') ? DELIVERY_FEE : 0;
+            let grandTotal = subtotal + currentFee;
             let typeLabel = (currentOrderType === 'delivery') ? '🛵 توصيل للمنزل' : '📦 استلام من المطعم';
 
             let msg = `طلب جديد 🔥 - مطعم برجر بابا\n\n`
-                    + `⚙️ نوع الطلب: ${typeLabel}\n`
-                    + `👤 الاسم: ${n}\n`
-                    + `📱 الموبايل: ${p}\n`
-                    + ((currentOrderType === 'delivery') ? `📍 العنوان: ${a}\n` : '')
-                    + `\nالطلبات:\n` 
-                    + cart.map(i => {
+                      + `⚙️ نوع الطلب: ${typeLabel}\n`
+                      + `👤 الاسم: ${n}\n`
+                      + `📱 الموبايل: ${p}\n`
+                      + (currentOrderType === 'delivery' ? `📍 العنوان: ${a}\n` : '')
+                      + `\n📋 الطلبات:\n` 
+                      + cart.map(i => {
                           let itemOpt = i.size ? ` [${i.size}]` : '';
                           if(i.combo) itemOpt += ` [+C]`;
                           return `- ${i.name}${itemOpt} ➔ ${i.price} ج.م`;
                       }).join('\n')
-                    + `\n\n-------------------------\n`
-                    + `💵 الحساب الفرعي: ${subtotal} ج.م\n`
-                    + ((currentOrderType === 'delivery') ? `🛵 خدمة التوصيل: ${DELIVERY_FEE} ج.م\n` : '')
-                    + `💰 الإجمالي الكلي: ${grandTotal} ج.م`;
+                      + `\n\n-------------------------\n`
+                      + `💵 الحساب الفرعي: ${subtotal} ج.م\n`
+                      + `🛵 خدمة التوصيل: ${currentFee} ج.م\n`
+                      + `💰 الإجمالي الكلي: ${grandTotal} ج.م`;
                       
             window.open(`https://wa.me/201061994288?text=${encodeURIComponent(msg)}`);
         }
