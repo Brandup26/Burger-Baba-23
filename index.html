@@ -103,36 +103,37 @@
         .img-load-status { font-size: 0.75rem; color: var(--desc-text); font-weight: 700; margin-top: 8px; display: block; }
         .splash-hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
 
-        /* --- تثبيت الجزء العلوي --- */
+        /* --- الهيدر المدمج --- */
         .sticky-top-container {
           position: sticky; top: 0; z-index: 1000;
-          background: var(--header-bg); box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+          background: var(--header-bg); box-shadow: 0 2px 15px rgba(0,0,0,0.06);
         }
 
         header { 
           display: flex; flex-direction: column; align-items: center;
-          padding: 12px 0 8px 0; border-bottom: 0.5px solid rgba(0,0,0,0.05);
+          padding: 8px 0 6px 0; border-bottom: 0.5px solid rgba(0,0,0,0.04);
         }
 
-        .header-top { width: 100%; display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 8px; }
+        .header-top { width: 100%; display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 4px; }
         
+        /* 🚀 تم تكبير اللوجو العلوي هنا من 65px إلى 90px */
         .header-logo-container {
-          width: 100px; height: 100px; 
-          border-radius: 25px; background: white;
-          padding: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden;
+          width: 90px; height: 90px; 
+          border-radius: 22px; background: white;
+          padding: 2px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden;
         }
         .header-logo { width: 100%; height: 100%; border-radius: 20px; object-fit: cover; }
 
         .theme-toggle {
-          position: absolute; right: 20px; top: 0;
-          width: 42px; height: 42px; background: var(--bg); border-radius: 12px;
+          position: absolute; right: 15px; top: 25px; /* تم ترحيل التوسيط ليناسب الحجم الجديد */
+          width: 38px; height: 38px; background: var(--bg); border-radius: 10px;
           display: flex; align-items: center; justify-content: center; cursor: pointer;
-          font-size: 1.1rem; border: none; color: var(--main-text);
+          font-size: 1rem; border: none; color: var(--main-text);
         }
 
-        .cart-trigger-container { position: absolute; left: 20px; top: 0; }
+        .cart-trigger-container { position: absolute; left: 15px; top: 25px; }
         .cart-trigger {
-          width: 42px; height: 42px; background: var(--bg); border-radius: 12px;
+          width: 38px; height: 38px; background: var(--bg); border-radius: 10px;
           display: flex; align-items: center; justify-content: center; position: relative;
         }
         .cart-trigger.shake { animation: cartShake 0.5s ease-in-out; }
@@ -143,38 +144,40 @@
         }
         
         .badge {
-          position: absolute; top: -5px; right: -5px; background: #ff3b30;
-          color: white; font-size: 10px; font-weight: 800; width: 20px; height: 20px;
+          position: absolute; top: -4px; right: -4px; background: #ff3b30;
+          color: white; font-size: 9px; font-weight: 800; width: 18px; height: 18px;
           border-radius: 50%; display: flex; align-items: center; justify-content: center;
           border: 2px solid white; transform: scale(0); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .badge.show { transform: scale(1); }
 
         .header-bottom-addr { 
-          text-align: center; width: 100%; padding: 6px 20px 0 20px; 
-          display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap;
+          text-align: center; width: 100%; padding: 4px 15px 0 15px; 
+          display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 4px; flex-wrap: wrap;
         }
-        .addr-tag { color: var(--address-tag); font-weight: 800; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
-        .brand-addr { font-size: 0.8rem; color: var(--main-text); font-weight: 700; text-align: center; line-height: 1.4; }
+        .addr-tag { color: var(--address-tag); font-weight: 800; font-size: 0.72rem; display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
+        .brand-addr { font-size: 0.72rem; color: var(--main-text); font-weight: 700; text-align: center; line-height: 1.3; }
 
-        /* شريط الأقسام الثابت */
+        /* شريط الأقسام الثابت المدمج */
         .category-nav {
-          display: flex; overflow-x: auto; white-space: nowrap; padding: 12px 20px; gap: 24px;
+          display: flex; overflow-x: auto; white-space: nowrap; padding: 10px 15px; gap: 18px;
           scrollbar-width: none; background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
         }
         .category-nav::-webkit-scrollbar { display: none; }
-        .cat-item { display: flex; flex-direction: column; align-items: center; min-width: 85px; cursor: pointer; }
-        .cat-img-box { width: 54px; height: 54px; border-radius: 16px; background: #e5e5ea; overflow: hidden; border: 2.5px solid transparent; transition: 0.3s; }
+        .cat-item { display: flex; flex-direction: column; align-items: center; min-width: 75px; cursor: pointer; }
+        
+        /* 🚀 تم تكبير بوكس الصورة للأقسام هنا من 44px إلى 58px */
+        .cat-img-box { width: 58px; height: 58px; border-radius: 16px; background: #e5e5ea; overflow: hidden; border: 2px solid transparent; transition: 0.3s; }
         .cat-img-box img { width: 100%; height: 100%; object-fit: cover; }
         .cat-item.active .cat-img-box { border-color: var(--accent); transform: scale(1.05); }
         .cat-item span { font-size: 0.75rem; font-weight: 800; color: var(--desc-text); margin-top: 5px; text-align: center; white-space: normal; word-break: keep-all; }
 
-        .menu-list { padding: 15px; max-width: 600px; margin: auto; }
+        .menu-list { padding: 12px; max-width: 600px; margin: auto; }
         
         /* كارت الطعام */
         .food-card {
-          background: var(--white); border-radius: 22px; margin-bottom: 15px; display: flex;
-          padding: 14px; gap: 12px; align-items: flex-start; box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+          background: var(--white); border-radius: 22px; margin-bottom: 12px; display: flex;
+          padding: 12px; gap: 12px; align-items: flex-start; box-shadow: 0 2px 10px rgba(0,0,0,0.03);
           position: relative; overflow: hidden;
         }
         
@@ -234,7 +237,6 @@
         .footer-phones { margin-bottom: 12px; }
         .footer-phones a { display: block; color: var(--accent); text-decoration: none; font-weight: 800; font-size: 1.1rem; margin: 5px 0; }
         
-        /* زرار اللوكيشن الشيك */
         .location-btn-container { margin: 15px 0 20px 0; }
         .location-btn {
             display: inline-flex; align-items: center; gap: 8px; background: #0a84ff; color: white;
@@ -303,7 +305,7 @@
             </div>
             <div class="header-bottom-addr">
                 <span class="addr-tag">📍 العنوان:</span>
-                <span class="brand-addr">مدينة بدر، طريق جمال عبد الناصر، بنزينة بترومين، أمام نادي سيتي كلوب</span>
+                <span class="brand-addr">مدينة الشروق، طريق جمال عبد الناصر، بنزينة بترومين، أمام نادي سيتي كلوب</span>
             </div>
         </header>
 
@@ -319,10 +321,9 @@
             <a href="tel:01124415297">01124415297</a>
         </div>
         
-        <!-- تحديث زرار اللوكيشن بالرابط الجديد الخاص بمدينة بدر -->
         <div class="location-btn-container">
             <a href="https://maps.app.goo.gl/HkDAcAdRJs1cyYf86?g_st=ac" target="_blank" class="location-btn">
-                <span>🗺️ عرض موقع المطعم على الخريطة</span>
+                <span>🗺️ عرض موقعنا</span>
             </a>
         </div>
 
@@ -623,7 +624,7 @@
             
             let grandTotal = subtotal > 0 ? (subtotal + DELIVERY_FEE) : 0;
             document.getElementById('subtotalAmount').innerText = `${subtotal} ج.م`;
-            document.getElementById('totalAmount').innerText = `${grandTotal} ج.m`;
+            document.getElementById('totalAmount').innerText = `${grandTotal} ج.م`;
         }
 
         function removeFromCart(idx) {
