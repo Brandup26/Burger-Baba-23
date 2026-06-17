@@ -1,0 +1,19 @@
+{
+  "navType": "none",
+  "name": "برجر بابا | المنيو الرسمي",
+  "short_name": "برجر بابا",
+  "description": "المنيو الرسمي لمطعم برجر بابا - الطعم اللي صاحي معاك 24 ساعة",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#d35400",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "images/logggo.jpg?v=3",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
