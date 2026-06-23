@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>برجر بابا | قائمة الطعام الذكية</title>
     
+    <!-- الكود المضاف لدعم هواتف الآيفون (iOS) دون تغيير الروابط القديمة -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#d35400">
     <meta name="apple-mobile-web-app-title" content="برجر بابا">
-    <link rel="apple-touch-icon" href="images/logggo.jpg">
+    <link rel="apple-touch-icon" href="images/logggo.jpg?v=3">
+    
     <link class="brand-logo-img" rel="apple-touch-icon" href="images/logggo.jpg">
     
     <link rel="manifest" href="manifest.json">
@@ -94,6 +96,51 @@
         
         .img-load-status { font-size: 0.75rem; color: var(--desc-text); font-weight: 700; margin-top: 8px; display: block; }
         .splash-hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+
+        /* --- شاشة العرض الترويجي المؤقت الاحترافي --- */
+        .offer-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 999999;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 1; transition: opacity 0.4s ease-in-out;
+        }
+        .offer-card-img {
+            position: relative;
+            width: 85%;
+            max-width: 380px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: scale(1); animation: popUpOffer 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .offer-card-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+        .close-offer-btn {
+            position: absolute;
+            top: 10px; right: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff; border: none;
+            width: 32px; height: 32px; border-radius: 50%;
+            font-size: 20px; cursor: pointer; z-index: 10;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        .offer-timer-bar {
+            position: absolute; bottom: 0; left: 0;
+            height: 5px; background: var(--accent); width: 100%;
+            animation: shrinkOfferBar 4s linear forwards;
+        }
+        @keyframes popUpOffer { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes shrinkOfferBar { 0% { width: 100%; } 100% { width: 0%; } }
 
         /* --- الهيدر العلوي --- */
         .sticky-top-container { position: sticky; top: 0; z-index: 1000; background: var(--header-bg); box-shadow: 0 2px 15px rgba(0,0,0,0.06); }
@@ -224,6 +271,14 @@
 </head>
 <body>
 
+    <div id="offerOverlay" class="offer-overlay" style="display: none;">
+        <div class="offer-card-img">
+            <button class="close-offer-btn" onclick="closeOfferNow()">×</button>
+            <img id="offerImage" src="images/offer.jpg" alt="عرض خاص">
+            <div class="offer-timer-bar"></div>
+        </div>
+    </div>
+
     <div id="splash-screen">
         <div class="loader-content">
             <div class="logo-wrapper">
@@ -287,7 +342,7 @@
             <div id="cartItemsList"></div>
             
             <div class="order-type-tabs">
-                <button type="button" id="typeDelivery" class="type-tab-btn active" onclick="setOrderType('delivery')">🛵 توصيل للمنزل</button>
+                <button type="button" id="typeDelivery" class="type-tab-btn active" onclick="setOrderType('delivery')">Refوصيل للمنزل</button>
                 <button type="button" id="typePickup" class="type-tab-btn" onclick="setOrderType('pickup')">🚶 استلام من الفرع</button>
             </div>
             
@@ -297,7 +352,7 @@
                     <span id="subtotalAmount">0 ج.م</span>
                 </div>
                 <div class="invoice-row" id="deliveryRow">
-                    <span>🛵 خدمة التوصيل:</span>
+                    <span>Ref خدمة التوصيل:</span>
                     <span>40 ج.م</span>
                 </div>
                 <div class="invoice-row grand-total">
@@ -335,7 +390,42 @@
             const splash = document.getElementById('splash-screen');
             if (splash) {
                 splash.classList.add('splash-hidden');
-                setTimeout(() => { if(splash) splash.remove(); }, 800); 
+                setTimeout(() => { 
+                    if(splash) splash.remove(); 
+                    checkAndShowOfferImage();
+                }, 800); 
+            }
+        }
+
+        // منظومة الفحص الذكي والظهور الاحترافي لصورة غلاف العرض الترويجي
+        function checkAndShowOfferImage() {
+            const offerImgUrl = "images/offer.jpg";
+            const imgCheck = new Image();
+            imgCheck.src = offerImgUrl;
+            
+            imgCheck.onload = function() {
+                const overlay = document.getElementById('offerOverlay');
+                if (overlay) {
+                    overlay.style.display = 'flex';
+                    setTimeout(() => {
+                        closeOfferNow();
+                    }, 4000); 
+                }
+            };
+            
+            imgCheck.onerror = function() {
+                console.log("Offer image not found or deleted from server. Skipping offer presentation.");
+                document.getElementById('offerOverlay').style.display = 'none';
+            };
+        }
+
+        function closeOfferNow() {
+            const overlay = document.getElementById('offerOverlay');
+            if (overlay && overlay.style.display !== 'none') {
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 400);
             }
         }
 
@@ -374,7 +464,6 @@
 
         function preloadAllImages() {
             const imageUrls = [];
-            // الاعتماد الكامل والديناميكي على الأقسام المكتوبة داخل الشيت بدون أي تعديل خارجي
             let uniqueCats = [...new Set(menuData.map(item => item.category))];
 
             uniqueCats.forEach(cat => imageUrls.push(`${IMAGES_PATH}${cat}.jpg`));
@@ -431,7 +520,6 @@
             
             const filteredItems = menuData.filter(i => i.category === cat);
             
-            // لو المستخدم اختار أو فتح قسم مكتوب عليه "العروض" ولكنه كان فارغاً تماماً في الشيت
             if (cat === "العروض" && filteredItems.length === 0) {
                 document.getElementById('menuList').innerHTML = `
                     <div class="no-offers-container">
@@ -641,9 +729,9 @@
             let currentFee = (orderType === 'delivery') ? DELIVERY_FEE : 0;
             let grandTotal = subtotal + currentFee;
 
-            let typeLabel = orderType === 'delivery' ? '🛵 توصيل للمنزل' : '🚶 استلام من الفرع (تيك أواي)';
+            let typeLabel = orderType === 'delivery' ? 'Ref توصيل للمنزل' : '🚶 استلام من الفرع (تيك أواي)';
             let addressLine = orderType === 'delivery' ? `📍 العنوان: ${a}\n` : `📍 طريقة الاستلام: من فرع مدينة الشروق مباشرة\n`;
-            let feeLine = orderType === 'delivery' ? `🛵 خدمة التوصيل: ${DELIVERY_FEE} ج.م\n` : '';
+            let feeLine = orderType === 'delivery' ? `Ref خدمة التوصيل: ${DELIVERY_FEE} ج.م\n` : '';
 
             let msg = `طلب جديد 🧾 - مطعم برجر بابا\n\n`
                       + `نوع الطلب: ${typeLabel}\n`
@@ -665,6 +753,27 @@
         }
 
         loadMenu();
+
+        // كود التسجيل الإجباري والذكي للسيرفس ووركر لمتابعة التحديثات تلقائياً
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw-pwa.js')
+                    .then((reg) => {
+                        console.log('SW Registered');
+                        // في حالة وجود كود جديد بالخلفية جاهز للتفعيل، يطرد القديم فوراً ويعمل ريلود
+                        reg.addEventListener('updatefound', () => {
+                            const newWorker = reg.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    console.log('New update available! Reloading...');
+                                    window.location.reload();
+                                }
+                            });
+                        });
+                    })
+                    .catch((err) => console.log('SW Failed', err));
+            });
+        }
     </script>
 </body>
 </html>
