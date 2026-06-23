@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>برجر بابا | قائمة الطعام الذكية</title>
     
-    <!-- الكود المضاف لدعم هواتف الآيفون (iOS) دون تغيير الروابط القديمة -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="#d35400">
     <meta name="apple-mobile-web-app-title" content="برجر بابا">
@@ -283,7 +282,7 @@
         .dev-credit { font-size: 0.85rem; color: var(--desc-text); font-weight: 700; }
         .dev-credit a { color: var(--address-tag); text-decoration: none; display: block; margin-top: 3px; }
 
-        /* نافذة السلة */
+        /* نافذة السلة --- */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; display: none; justify-content: center; align-items: flex-end; }
         .modal-content { background: var(--white); width: 100%; max-width: 500px; padding: 25px; border-radius: 30px 30px 0 0; max-height: 90vh; overflow-y: auto; color: var(--main-text); }
         
@@ -318,7 +317,6 @@
         </div>
     </div>
 
-    <!-- النافذة المنبثقة الذكية (Creative Design Element) لاختيار ساندوتشات العروض -->
     <div class="creative-offer-modal" id="creativeOfferModal" onclick="if(event.target==this) closeCreativeOfferModal()">
         <div class="creative-offer-content">
             <h3 style="color: var(--accent); font-weight: 800; margin-bottom: 4px; font-size: 1.2rem;">اختر الساندوتشات الدبل داخل العرض 🎁</h3>
@@ -396,7 +394,7 @@
             <div id="cartItemsList"></div>
             
             <div class="order-type-tabs">
-                <button type="button" id="typeDelivery" class="type-tab-btn active" onclick="setOrderType('delivery')">Refوصيل للمنزل</button>
+                <button type="button" id="typeDelivery" class="type-tab-btn active" onclick="setOrderType('delivery')">توصيل للمنزل</button>
                 <button type="button" id="typePickup" class="type-tab-btn" onclick="setOrderType('pickup')">🚶 استلام من الفرع</button>
             </div>
             
@@ -406,7 +404,7 @@
                     <span id="subtotalAmount">0 ج.م</span>
                 </div>
                 <div class="invoice-row" id="deliveryRow">
-                    <span>Ref خدمة التوصيل:</span>
+                    <span>رسوم خدمة التوصيل:</span>
                     <span>40 ج.م</span>
                 </div>
                 <div class="invoice-row grand-total">
@@ -433,13 +431,14 @@
         let isImagesPreloaded = false;
         let orderType = 'delivery'; 
 
-        // متغيرات للتحكم في العرض الذكي المضاف حديثاً
         let currentOfferData = null;
         let selectedOfferItems = [];
         let globalClickEvent = null; 
         let globalAddBtnElement = null;
 
-        setTimeout(checkAndDismissSplash, 4500); 
+        setTimeout(() => { if (document.getElementById('splash-screen')) { dismissSplashScreen(); } }, 7000); 
+
+        checkAndDismissSplash();
 
         function checkAndDismissSplash() {
             if (isMenuLoaded && isImagesPreloaded) { dismissSplashScreen(); } 
@@ -448,44 +447,31 @@
 
         function dismissSplashScreen() {
             const splash = document.getElementById('splash-screen');
-            if (splash) {
+            if (splash && !splash.classList.contains('splash-hidden')) {
                 splash.classList.add('splash-hidden');
-                setTimeout(() => { 
-                    if(splash) splash.remove(); 
-                    checkAndShowOfferImage();
-                }, 800); 
+                setTimeout(() => { if(splash) splash.remove(); checkAndShowOfferImage(); }, 800); 
             }
         }
 
-        // منظومة الفحص الذكي والظهور الاحترافي لصورة غلاف العرض الترويجي
         function checkAndShowOfferImage() {
             const offerImgUrl = "images/offer.jpg";
             const imgCheck = new Image();
             imgCheck.src = offerImgUrl;
-            
             imgCheck.onload = function() {
                 const overlay = document.getElementById('offerOverlay');
                 if (overlay) {
                     overlay.style.display = 'flex';
-                    setTimeout(() => {
-                        closeOfferNow();
-                    }, 4000); 
+                    setTimeout(() => { closeOfferNow(); }, 4000); 
                 }
             };
-            
-            imgCheck.onerror = function() {
-                console.log("Offer image not found or deleted from server. Skipping offer presentation.");
-                document.getElementById('offerOverlay').style.display = 'none';
-            };
+            imgCheck.onerror = function() { document.getElementById('offerOverlay').style.display = 'none'; };
         }
 
         function closeOfferNow() {
             const overlay = document.getElementById('offerOverlay');
             if (overlay && overlay.style.display !== 'none') {
                 overlay.style.opacity = '0';
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                }, 400);
+                setTimeout(() => { overlay.style.display = 'none'; }, 400);
             }
         }
 
@@ -516,16 +502,12 @@
                 
                 isMenuLoaded = true;
                 preloadAllImages();
-            } catch (e) { 
-                console.error(e);
-                isMenuLoaded = true; isImagesPreloaded = true; dismissSplashScreen();
-            }
+            } catch (e) { isMenuLoaded = true; isImagesPreloaded = true; dismissSplashScreen(); }
         }
 
         function preloadAllImages() {
             const imageUrls = [];
             let uniqueCats = [...new Set(menuData.map(item => item.category))];
-
             uniqueCats.forEach(cat => imageUrls.push(`${IMAGES_PATH}${cat}.jpg`));
             menuData.forEach(item => imageUrls.push(item.img));
             
@@ -540,13 +522,8 @@
                 img.src = url;
                 img.onload = img.onerror = () => {
                     loadedCount++;
-                    if(statusEl) { 
-                        statusEl.innerText = `جاري تحميل وعرض الصور وعناصر المنيو التفاعلية (${loadedCount}/${totalImages})...`; 
-                    }
-                    if (loadedCount >= totalImages) {
-                        isImagesPreloaded = true;
-                        renderNav(uniqueCats);
-                    }
+                    if(statusEl) { statusEl.innerText = `جاري تحميل وعرض الصور وعناصر المنيو التفاعلية (${loadedCount}/${totalImages})...`; }
+                    if (loadedCount >= totalImages) { isImagesPreloaded = true; renderNav(uniqueCats); }
                 };
             });
         }
@@ -596,7 +573,6 @@
             
             document.getElementById('menuList').innerHTML = filteredItems.map(item => {
                 const isAvailable = item.priceMedium > 0 || item.priceLarge > 0;
-                
                 let optionsHtml = '<div class="options-container">';
                 let mainPrice = item.priceMedium > 0 ? item.priceMedium : item.priceLarge;
                 let initialSizeLabel = "";
@@ -672,7 +648,6 @@
         }
 
         function addToCart(e, btn, id, name, img) {
-            // فحص ذكي: إذا كان اسم الوجبة يحتوي على "عرض الساندوتشين" يتم تشغيل الواجهة المنبثقة فوراً لفصق العرض
             if (name.includes("عرض الساندوتشين")) {
                 openCreativeOfferModal(e, btn, id, name, img);
                 return;
@@ -714,7 +689,6 @@
             }, 700);
         }
 
-        /* --- كل الدوال البرمجية المضافة لتشغيل منطق الـ Creative Offer الفاخر لحظياً --- */
         function openCreativeOfferModal(e, btn, id, name, img) {
             globalClickEvent = { clientX: e.clientX, clientY: e.clientY };
             globalAddBtnElement = btn;
@@ -725,12 +699,21 @@
             currentOfferData = { id, name, price: finalPrice, img };
             selectedOfferItems = [];
             
-            // فلترة المنيو بالكامل لجلب الساندوتشات الدبل فقط
-            const doubleItems = menuData.filter(item => item.nameAr.includes("دبل") || item.nameEn.toLowerCase().includes("double"));
+            // --- التعديل هنا: الفلترة لتظهر فقط أصناف برجر الدجاج واللحم (بأي صيغة) ---
+            const doubleItems = menuData.filter(item => {
+                const isOfferItself = item.id === id || item.nameAr.includes("عرض الساندوتشين");
+                if (isOfferItself) return false;
+                
+                // التأكد من أن الصنف ينتمي لقسم برجر الدجاج أو اللحم، وله سعر كبير/دبل
+                const cat = item.category;
+                const isBurgerChickenOrMeat = cat.includes("برجر") && (cat.includes("دجاج") || cat.includes("لحم") || cat.includes("لحمة"));
+                return isBurgerChickenOrMeat && item.priceLarge > 0;
+            });
+            // ------------------------------------------------------------------------------------
             
             const container = document.getElementById('creativeDoubleItemsList');
             if(doubleItems.length === 0) {
-                container.innerHTML = `<p style="text-align:center; padding:20px; font-size:0.9rem; color:var(--desc-text);">عذراً، لم يتم العثور على ساندوتشات دبل في القائمة حالياً!</p>`;
+                container.innerHTML = `<p style="text-align:center; padding:20px; font-size:0.9rem; color:var(--desc-text);">عذراً، لم يتم العثور على ساندوتشات دبل في قسم البرجر حالياً!</p>`;
             } else {
                 container.innerHTML = doubleItems.map(item => `
                     <div class="offer-selection-card" id="offercard-${item.id}" onclick="selectOfferItem(${item.id}, '${item.nameAr}', '${item.img}')">
@@ -751,23 +734,19 @@
         }
 
         function selectOfferItem(id, nameAr, img) {
-            const cardEl = document.getElementById(`offercard-${id}`);
             const countEl = document.getElementById(`offercount-${id}`);
             
             if (selectedOfferItems.length >= 2) {
-                // إذا تم اختيار 2 بالفعل وضغط على واحد منهم، نقوم بإزالته لتسهيل التعديل
                 const existingIdx = selectedOfferItems.findIndex(item => item.id === id);
                 if (existingIdx !== -1) {
                     selectedOfferItems.splice(existingIdx, 1);
                 } else {
-                    return; // الحد الأقصى 2
+                    return;
                 }
             } else {
-                // إضافة الساندوتش المختار
                 selectedOfferItems.push({ id, nameAr });
             }
             
-            // تحديث واجهات الكروت والأرقام التكرارية بداخل الـ Modal
             document.querySelectorAll('.offer-selection-card').forEach(el => el.classList.remove('selected'));
             document.querySelectorAll('.offer-selection-count').forEach(el => { el.innerText = "0"; });
             
@@ -797,31 +776,15 @@
 
         function confirmCreativeOffer() {
             if (selectedOfferItems.length !== 2 || !currentOfferData) return;
+            const fullOfferName = `${currentOfferData.name} (${selectedOfferItems[0].nameAr} + ${selectedOfferItems[1].nameAr})`;
             
-            const item1 = selectedOfferItems[0].nameAr;
-            const item2 = selectedOfferItems[1].nameAr;
-            
-            // تكوين اسم العرض بشكل مفصل لطباعته في الفاتورة والواتساب بشكل رائع
-            const fullOfferName = `${currentOfferData.name} (${item1} + ${item2})`;
-            
-            cart.push({ 
-                name: fullOfferName, 
-                price: currentOfferData.price, 
-                size: "", 
-                combo: false, 
-                img: currentOfferData.img 
-            });
-            
+            cart.push({ name: fullOfferName, price: currentOfferData.price, size: "", combo: false, img: currentOfferData.img });
             closeCreativeOfferModal();
             
-            // تشغيل أنميشن التحليق الفاخر للبرجر بناءً على زر الـ + القديم
             if (globalAddBtnElement && globalClickEvent) {
                 const btn = globalAddBtnElement;
                 const notice = btn.previousElementSibling;
-                if(notice) {
-                    notice.classList.add('show');
-                    setTimeout(() => notice.classList.remove('show'), 1800);
-                }
+                if(notice) { notice.classList.add('show'); setTimeout(() => notice.classList.remove('show'), 1800); }
                 
                 const fly = document.createElement('div');
                 fly.className = 'fly-item';
@@ -839,12 +802,7 @@
                     fly.style.opacity = '0';
                 }, 10);
                 
-                setTimeout(() => { 
-                    fly.remove(); 
-                    updateCart();
-                    cartBtn.classList.add('shake');
-                    setTimeout(() => cartBtn.classList.remove('shake'), 500);
-                }, 700);
+                setTimeout(() => { fly.remove(); updateCart(); cartBtn.classList.add('shake'); setTimeout(() => cartBtn.classList.remove('shake'), 500); }, 700);
             } else {
                 updateCart();
             }
@@ -937,9 +895,9 @@
             let currentFee = (orderType === 'delivery') ? DELIVERY_FEE : 0;
             let grandTotal = subtotal + currentFee;
 
-            let typeLabel = orderType === 'delivery' ? 'Ref توصيل للمنزل' : '🚶 استلام من الفرع (تيك أواي)';
-            let addressLine = orderType === 'delivery' ? `📍 العنوان: ${a}\n` : `📍 طريقة الاستلام: من فرع مدينة الشروق مباشرة\n`;
-            let feeLine = orderType === 'delivery' ? `Ref خدمة التوصيل: ${DELIVERY_FEE} ج.م\n` : '';
+            let typeLabel = orderType === 'delivery' ? 'توصيل للمنزل' : 'استلام من الفرع';
+            let addressLine = orderType === 'delivery' ? `📍 العنوان: ${a}\n` : '';
+            let feeLine = orderType === 'delivery' ? `رسوم خدمة التوصيل: ${DELIVERY_FEE} ج.م\n` : '';
 
             let msg = `طلب جديد 🧾 - مطعم برجر بابا\n\n`
                       + `نوع الطلب: ${typeLabel}\n`
@@ -962,18 +920,14 @@
 
         loadMenu();
 
-        // كود التسجيل الإجباري والذكي للسيرفس ووركر لمتابعة التحديثات تلقائياً
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw-pwa.js')
                     .then((reg) => {
-                        console.log('SW Registered');
-                        // في حالة وجود كود جديد بالخلفية جاهز للتفعيل، يطرد القديم فوراً ويعمل ريلود
                         reg.addEventListener('updatefound', () => {
                             const newWorker = reg.installing;
                             newWorker.addEventListener('statechange', () => {
                                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    console.log('New update available! Reloading...');
                                     window.location.reload();
                                 }
                             });
