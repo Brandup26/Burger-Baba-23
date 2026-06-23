@@ -231,6 +231,45 @@
 
         .fly-item { position: fixed; z-index: 9999; pointer-events: none; width: 30px; height: 30px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1); }
 
+        /* --- الـ CSS المخصص لنافذة اختيار الساندوتشات الدبل للعروض بنظام الـ Dark Luxury القديم الحصري --- */
+        .creative-offer-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            z-index: 99999; display: none; justify-content: center; align-items: center; padding: 15px;
+        }
+        .creative-offer-content {
+            background: var(--white); width: 100%; max-width: 440px; border-radius: 26px;
+            padding: 22px; box-shadow: 0 25px 60px rgba(0,0,0,0.4); border: 1px solid rgba(211, 84, 0, 0.15);
+            animation: cardEntrance 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
+        }
+        .double-items-grid {
+            max-height: 280px; overflow-y: auto; margin: 15px 0; padding-right: 2px;
+        }
+        .double-items-grid::-webkit-scrollbar { width: 4px; }
+        .double-items-grid::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+        .offer-selection-card {
+            display: flex; align-items: center; gap: 12px; padding: 12px;
+            background: rgba(0,0,0,0.04); border-radius: 16px; margin-bottom: 8px;
+            cursor: pointer; border: 2px solid transparent; transition: all 0.2s ease;
+        }
+        .offer-selection-card.selected {
+            border-color: var(--accent); background: rgba(211, 84, 0, 0.05);
+        }
+        .offer-selection-img { width: 45px; height: 45px; border-radius: 10px; object-fit: cover; }
+        .offer-selection-name { font-size: 0.9rem; font-weight: 700; flex: 1; color: var(--main-text); }
+        .offer-selection-check {
+            width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--desc-text);
+            display: flex; align-items: center; justify-content: center; font-size: 11px; color: transparent; font-weight: bold;
+        }
+        .offer-selection-card.selected .offer-selection-check {
+            background: var(--accent); border-color: var(--accent); color: white;
+        }
+        .offer-selection-count {
+            background: var(--accent); color: white; font-size: 0.7rem; font-weight: 800;
+            padding: 2px 8px; border-radius: 8px; display: none;
+        }
+        .offer-selection-card.selected .offer-selection-count { display: inline-block; }
+
         /* --- Footer --- */
         .restaurant-footer { padding: 30px 20px; text-align: center; background: var(--white); border-top: 1px solid rgba(0,0,0,0.05); margin-top: 20px; }
         .footer-phones { margin-bottom: 12px; }
@@ -276,6 +315,21 @@
             <button class="close-offer-btn" onclick="closeOfferNow()">×</button>
             <img id="offerImage" src="images/offer.jpg" alt="عرض خاص">
             <div class="offer-timer-bar"></div>
+        </div>
+    </div>
+
+    <!-- النافذة المنبثقة الذكية (Creative Design Element) لاختيار ساندوتشات العروض -->
+    <div class="creative-offer-modal" id="creativeOfferModal" onclick="if(event.target==this) closeCreativeOfferModal()">
+        <div class="creative-offer-content">
+            <h3 style="color: var(--accent); font-weight: 800; margin-bottom: 4px; font-size: 1.2rem;">اختر الساندوتشات الدبل داخل العرض 🎁</h3>
+            <p style="font-size: 0.8rem; color: var(--desc-text); font-weight: 700; margin-bottom: 15px;">برجاء اختيار عدد ساندوتشين (يمكنك تكرار نفس النوع):</p>
+            
+            <div class="double-items-grid" id="creativeDoubleItemsList"></div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button id="creativeSubmitOfferBtn" disabled style="flex: 1; background: #8e8e93; color: white; border: none; padding: 14px; border-radius: 14px; font-weight: 800; cursor: not-allowed; font-size: 0.95rem;" onclick="confirmCreativeOffer()">إضافة العرض للسلة (0/2)</button>
+                <button style="background: #ff3b30; color: white; border: none; padding: 14px; border-radius: 14px; font-weight: 800; cursor: pointer; font-size: 0.95rem;" onclick="closeCreativeOfferModal()">إلغاء</button>
+            </div>
         </div>
     </div>
 
@@ -378,6 +432,12 @@
         let isMenuLoaded = false;
         let isImagesPreloaded = false;
         let orderType = 'delivery'; 
+
+        // متغيرات للتحكم في العرض الذكي المضاف حديثاً
+        let currentOfferData = null;
+        let selectedOfferItems = [];
+        let globalClickEvent = null; 
+        let globalAddBtnElement = null;
 
         setTimeout(checkAndDismissSplash, 4500); 
 
@@ -612,6 +672,12 @@
         }
 
         function addToCart(e, btn, id, name, img) {
+            // فحص ذكي: إذا كان اسم الوجبة يحتوي على "عرض الساندوتشين" يتم تشغيل الواجهة المنبثقة فوراً لفصق العرض
+            if (name.includes("عرض الساندوتشين")) {
+                openCreativeOfferModal(e, btn, id, name, img);
+                return;
+            }
+
             const card = document.getElementById(`card-${id}`);
             const finalPrice = parseFloat(card.getAttribute('data-current-price'));
             const selectedSize = card.getAttribute('data-selected-size');
@@ -646,6 +712,148 @@
                 cartBtn.classList.add('shake');
                 setTimeout(() => cartBtn.classList.remove('shake'), 500);
             }, 700);
+        }
+
+        /* --- كل الدوال البرمجية المضافة لتشغيل منطق الـ Creative Offer الفاخر لحظياً --- */
+        function openCreativeOfferModal(e, btn, id, name, img) {
+            globalClickEvent = { clientX: e.clientX, clientY: e.clientY };
+            globalAddBtnElement = btn;
+            
+            const card = document.getElementById(`card-${id}`);
+            const finalPrice = parseFloat(card.getAttribute('data-current-price'));
+            
+            currentOfferData = { id, name, price: finalPrice, img };
+            selectedOfferItems = [];
+            
+            // فلترة المنيو بالكامل لجلب الساندوتشات الدبل فقط
+            const doubleItems = menuData.filter(item => item.nameAr.includes("دبل") || item.nameEn.toLowerCase().includes("double"));
+            
+            const container = document.getElementById('creativeDoubleItemsList');
+            if(doubleItems.length === 0) {
+                container.innerHTML = `<p style="text-align:center; padding:20px; font-size:0.9rem; color:var(--desc-text);">عذراً، لم يتم العثور على ساندوتشات دبل في القائمة حالياً!</p>`;
+            } else {
+                container.innerHTML = doubleItems.map(item => `
+                    <div class="offer-selection-card" id="offercard-${item.id}" onclick="selectOfferItem(${item.id}, '${item.nameAr}', '${item.img}')">
+                        <img src="${item.img}" class="offer-selection-img" onerror="this.src='${IMAGES_PATH}default.jpg'">
+                        <span class="offer-selection-name">${item.nameAr}</span>
+                        <span class="offer-selection-count" id="offercount-${item.id}">0</span>
+                        <div class="offer-selection-check">✔</div>
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('creativeSubmitOfferBtn').disabled = true;
+            document.getElementById('creativeSubmitOfferBtn').style.background = "#8e8e93";
+            document.getElementById('creativeSubmitOfferBtn').style.cursor = "not-allowed";
+            document.getElementById('creativeSubmitOfferBtn').innerText = "إضافة العرض للسلة (0/2)";
+            
+            document.getElementById('creativeOfferModal').style.display = 'flex';
+        }
+
+        function selectOfferItem(id, nameAr, img) {
+            const cardEl = document.getElementById(`offercard-${id}`);
+            const countEl = document.getElementById(`offercount-${id}`);
+            
+            if (selectedOfferItems.length >= 2) {
+                // إذا تم اختيار 2 بالفعل وضغط على واحد منهم، نقوم بإزالته لتسهيل التعديل
+                const existingIdx = selectedOfferItems.findIndex(item => item.id === id);
+                if (existingIdx !== -1) {
+                    selectedOfferItems.splice(existingIdx, 1);
+                } else {
+                    return; // الحد الأقصى 2
+                }
+            } else {
+                // إضافة الساندوتش المختار
+                selectedOfferItems.push({ id, nameAr });
+            }
+            
+            // تحديث واجهات الكروت والأرقام التكرارية بداخل الـ Modal
+            document.querySelectorAll('.offer-selection-card').forEach(el => el.classList.remove('selected'));
+            document.querySelectorAll('.offer-selection-count').forEach(el => { el.innerText = "0"; });
+            
+            selectedOfferItems.forEach(item => {
+                const cEl = document.getElementById(`offercard-${item.id}`);
+                const countNumEl = document.getElementById(`offercount-${item.id}`);
+                if(cEl) cEl.classList.add('selected');
+                if(countNumEl) {
+                    let currentCount = selectedOfferItems.filter(i => i.id === item.id).length;
+                    countNumEl.innerText = currentCount;
+                }
+            });
+            
+            const submitBtn = document.getElementById('creativeSubmitOfferBtn');
+            submitBtn.innerText = `إضافة العرض للسلة (${selectedOfferItems.length}/2)`;
+            
+            if (selectedOfferItems.length === 2) {
+                submitBtn.disabled = false;
+                submitBtn.style.background = "var(--success)";
+                submitBtn.style.cursor = "pointer";
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.style.background = "#8e8e93";
+                submitBtn.style.cursor = "not-allowed";
+            }
+        }
+
+        function confirmCreativeOffer() {
+            if (selectedOfferItems.length !== 2 || !currentOfferData) return;
+            
+            const item1 = selectedOfferItems[0].nameAr;
+            const item2 = selectedOfferItems[1].nameAr;
+            
+            // تكوين اسم العرض بشكل مفصل لطباعته في الفاتورة والواتساب بشكل رائع
+            const fullOfferName = `${currentOfferData.name} (${item1} + ${item2})`;
+            
+            cart.push({ 
+                name: fullOfferName, 
+                price: currentOfferData.price, 
+                size: "", 
+                combo: false, 
+                img: currentOfferData.img 
+            });
+            
+            closeCreativeOfferModal();
+            
+            // تشغيل أنميشن التحليق الفاخر للبرجر بناءً على زر الـ + القديم
+            if (globalAddBtnElement && globalClickEvent) {
+                const btn = globalAddBtnElement;
+                const notice = btn.previousElementSibling;
+                if(notice) {
+                    notice.classList.add('show');
+                    setTimeout(() => notice.classList.remove('show'), 1800);
+                }
+                
+                const fly = document.createElement('div');
+                fly.className = 'fly-item';
+                fly.innerHTML = '🍔';
+                fly.style.left = globalClickEvent.clientX + 'px';
+                fly.style.top = globalClickEvent.clientY + 'px';
+                document.body.appendChild(fly);
+
+                const cartBtn = document.getElementById('cartBtn');
+                const cartPos = cartBtn.getBoundingClientRect();
+                setTimeout(() => {
+                    fly.style.left = (cartPos.left + 20) + 'px';
+                    fly.style.top = (cartPos.top + 20) + 'px';
+                    fly.style.transform = 'scale(0.2)';
+                    fly.style.opacity = '0';
+                }, 10);
+                
+                setTimeout(() => { 
+                    fly.remove(); 
+                    updateCart();
+                    cartBtn.classList.add('shake');
+                    setTimeout(() => cartBtn.classList.remove('shake'), 500);
+                }, 700);
+            } else {
+                updateCart();
+            }
+        }
+
+        function closeCreativeOfferModal() {
+            document.getElementById('creativeOfferModal').style.display = 'none';
+            currentOfferData = null;
+            selectedOfferItems = [];
         }
 
         function setOrderType(type) {
@@ -683,7 +891,7 @@
                     <div class="cart-item-info">
                         <span class="cart-item-name">${item.name}</span>
                         ${detailsText ? `<span class="cart-item-details">${detailsText}</span>` : ''}
-                        <span class="cart-item-price">${item.price} j.m</span>
+                        <span class="cart-item-price">${item.price} ج.م</span>
                     </div>
                     <span class="remove-btn" onclick="removeFromCart(${idx})">حذف</span>
                 </div>`;

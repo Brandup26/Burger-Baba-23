@@ -38,8 +38,7 @@ self.addEventListener('fetch', (event) => {
 
   // 1. استثناء جوجل شيت والواتساب تماماً من الكاش لضمان تحديث الأسعار لحظياً من الشيت
   if (url.includes('google.com') || url.includes('wa.me')) {
-    event.respondWith(fetch(event.request));
-    return;
+    return; // اترك المتصفح يتعامل معها بشكل طبيعي خارج السيرفس ووركر
   }
 
   // 2. استراتيجية (الشبكة أولاً) لملف الـ HTML والصور لضمان ظهور أي تعديل جديد فوراً
@@ -47,14 +46,20 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          // إذا كانت الشبكة متاحة، نخزن نسخة جديدة في الكاش ونعرضها للزبون
-          if (response.status === 200) {
+          // التعديل هنا: السماح بكاش الـ status 200 أو الـ opaque responses (status 0) لضمان كاش الصور الخارجية
+          if (response.status === 200 || response.status === 0) {
             const responseClone = response.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
           }
           return response;
         })
-        .catch(() => caches.match(event.request)) // لو الزبون أوفلاين تماماً، يفتح الكاش القديم عشان التطبيق ما يقفش
+        .catch(() => {
+          // لو الزبون أوفلاين، ابحث عن الملف في الكاش
+          return caches.match(event.request).then((cachedResponse) => {
+            if (cachedResponse) return cachedResponse;
+            // لو الملف مش في الكاش والأوفلاين تام، ممكن ترجع صفحة أوفلاين مخصصة هنا لو أحببت
+          });
+        })
     );
     return;
   }
@@ -64,12 +69,14 @@ self.addEventListener('fetch', (event) => {
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) return cachedResponse;
       return fetch(event.request).then((response) => {
-        if (response.status === 200 && event.request.method === 'GET') {
+        if ((response.status === 200 || response.status === 0) && event.request.method === 'GET') {
           const responseClone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
         }
         return response;
       });
+    }).catch(() => {
+      // تفادي الـ Unhandled Rejection في حالة انقطاع الشبكة تماماً للملفات الثابتة
     })
   );
 });
