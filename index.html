@@ -243,12 +243,12 @@
         .user-fields input { background: var(--bg); border: none; padding: 16px; border-radius: 14px; width: 100%; margin-bottom: 10px; color: var(--main-text); text-align: right; font-weight: 600; }
         .submit-btn { background: #34c759; color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; font-size: 1rem; }
 
-        /* قسم إدارة المطعم في أسفل الصفحة تماماً */
+        /* زر إدارة المطعم أسفل الصفحة */
         .bottom-admin-section {
             width: 100%;
             background: var(--white);
             border-top: 1px dashed rgba(211, 84, 0, 0.25);
-            padding: 16px 20px 24px 20px;
+            padding: 18px 20px 24px 20px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -308,7 +308,7 @@
           z-index: 999998; display: none; justify-content: center; align-items: center; padding: 15px;
         }
         .admin-panel-box {
-          background: var(--white); width: 100%; max-width: 480px; border-radius: 28px;
+          background: var(--white); width: 100%; max-width: 500px; border-radius: 28px;
           padding: 22px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3);
           border: 1px solid rgba(211, 84, 0, 0.2); animation: cardEntrance 0.35s ease forwards;
         }
@@ -349,26 +349,67 @@
         input:checked + .slider { background-color: #34c759; }
         input:checked + .slider:before { transform: translateX(22px); }
 
-        /* سجل الطلبات */
-        .orders-header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        /* --- تصميم سجل الطلبات المنسق والرأسي فائق الأناقة --- */
+        .orders-header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 2px; }
         .orders-count-badge { font-size: 0.85rem; font-weight: 800; color: var(--accent); }
-        .clear-orders-btn { background: #ff3b30; color: white; border: none; padding: 6px 14px; border-radius: 10px; font-size: 0.75rem; font-weight: 800; cursor: pointer; }
-        .orders-scroll-area { max-height: 380px; overflow-y: auto; padding-right: 2px; }
+        .clear-orders-btn { background: #ff3b30; color: white; border: none; padding: 7px 14px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; cursor: pointer; }
+        .orders-scroll-area { max-height: 420px; overflow-y: auto; padding-right: 2px; display: flex; flex-direction: column; gap: 14px; }
         .orders-scroll-area::-webkit-scrollbar { width: 4px; }
         .orders-scroll-area::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
         
         .order-card-box {
-            background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.06);
-            border-radius: 18px; padding: 14px; margin-bottom: 10px; position: relative;
+            background: var(--white);
+            border: 1px solid rgba(211, 84, 0, 0.18);
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
-        .order-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
-        .order-id-tag { font-weight: 800; color: var(--accent); font-size: 0.88rem; }
-        .order-time-tag { font-size: 0.72rem; color: var(--desc-text); font-weight: 600; }
-        .order-user-info { font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; line-height: 1.4; }
-        .order-items-summary { background: var(--bg); padding: 8px 12px; border-radius: 12px; font-size: 0.8rem; margin-bottom: 8px; white-space: pre-line; line-height: 1.5; font-weight: 600; }
-        .order-card-footer { display: flex; justify-content: space-between; align-items: center; }
-        .order-total-price { font-weight: 800; color: var(--success); font-size: 0.95rem; }
-        .delete-single-order { color: #ff3b30; font-size: 0.78rem; font-weight: 800; cursor: pointer; background: transparent; border: none; }
+        .order-card-meta {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px dashed rgba(0,0,0,0.08); padding-bottom: 8px;
+        }
+        .order-type-chip {
+            background: rgba(211, 84, 0, 0.1); color: var(--accent);
+            font-size: 0.76rem; font-weight: 800; padding: 3px 10px; border-radius: 8px;
+        }
+        .order-time-chip { font-size: 0.74rem; color: var(--desc-text); font-weight: 700; }
+
+        .order-section-block {
+            display: flex; flex-direction: column; gap: 4px; font-size: 0.83rem;
+        }
+        .order-info-line { display: flex; align-items: center; gap: 6px; font-weight: 700; color: var(--main-text); }
+        .order-info-line a { color: var(--address-tag); text-decoration: none; font-weight: 800; }
+        
+        .order-items-box {
+            background: rgba(0,0,0,0.03);
+            border-radius: 14px;
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin: 4px 0;
+        }
+        .order-item-row {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.82rem; font-weight: 700; border-bottom: 0.5px solid rgba(0,0,0,0.04);
+            padding-bottom: 4px;
+        }
+        .order-item-row:last-child { border-bottom: none; padding-bottom: 0; }
+        
+        .order-footer-details {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 6px; border-top: 1px dashed rgba(0,0,0,0.08);
+        }
+        .order-total-price-tag {
+            font-weight: 800; color: var(--accent); font-size: 1.05rem;
+        }
+        .delete-single-order-btn {
+            background: rgba(255, 59, 48, 0.1); color: #ff3b30; border: none;
+            padding: 6px 12px; border-radius: 10px; font-size: 0.75rem; font-weight: 800; cursor: pointer;
+        }
 
         /* واجهة تغيير كلمة السر */
         .pin-change-form { display: flex; flex-direction: column; gap: 12px; padding: 10px 0; }
@@ -455,7 +496,7 @@
         </div>
     </footer>
 
-    <!-- قسم الإدارة في أسفل التطبيق فقط -->
+    <!-- قسم الإدارة أسفل الصفحة -->
     <div class="bottom-admin-section">
         <button type="button" class="bottom-admin-btn" onclick="openAdminPortal()">
             <span>🔐 لوحة إدارة المطعم</span>
@@ -559,7 +600,7 @@
                 <div class="admin-items-list" id="adminItemsListContainer"></div>
             </div>
 
-            <!-- تبويب 2: سجل الطلبات -->
+            <!-- تبويب 2: سجل الطلبات المنسق والرأسي -->
             <div class="tab-section" id="tabOrders">
                 <div class="orders-header-actions">
                     <span class="orders-count-badge" id="ordersCountBadge">الطلبات المسجلة (0)</span>
@@ -1075,7 +1116,7 @@
         // إرسال الطلب وحفظه في Firebase
         function sendToWA() {
             if (currentRestaurantStatus === 'closed') {
-                return alert("⚠️ نعتذر منكم، المطعم مغلق حالياً ولا يستقبل طلبات جديدة!");
+                return alert("⚠️️ نعتذر منكم، المطعم مغلق حالياً ولا يستقبل طلبات جديدة!");
             }
 
             const n = document.getElementById('uName').value.trim(), 
@@ -1111,14 +1152,17 @@
                     let opt = i.size ? ` [${i.size}]` : '';
                     if(i.combo) opt += ` [+C]`;
                     if(i.isOffer) opt += ` (عرض)`;
-                    return `${i.name}${opt} (${i.price} ج.م)`;
+                    return {
+                        name: `${i.name}${opt}`,
+                        price: i.price
+                    };
                 }),
                 subtotal: subtotal,
                 discount: discountValue,
                 deliveryFee: currentFee,
                 grandTotal: grandTotal,
                 timestamp: Date.now(),
-                dateStr: new Date().toLocaleString('ar-EG')
+                dateStr: new Date().toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' })
             };
 
             // تسجيل الطلب في Firebase Realtime Database
@@ -1185,20 +1229,18 @@
             });
         }
 
+        // فتح نافذة كلمة السر في كل مرة (لا يوجد دخول تلقائي)
         function openAdminPortal() {
-            if (isRestaurantOwner) {
-                openAdminPanel();
-            } else {
-                document.getElementById('adminLoginModal').style.display = 'flex';
-                document.getElementById('adminPinInput').value = '';
-                document.getElementById('adminPinInput').focus();
-            }
+            document.getElementById('adminLoginModal').style.display = 'flex';
+            document.getElementById('adminPinInput').value = '';
+            document.getElementById('adminPinInput').focus();
         }
 
         function closeAdminLoginModal() {
             document.getElementById('adminLoginModal').style.display = 'none';
         }
 
+        // التحقق من كلمة السر
         function verifyAdminPin() {
             const entered = document.getElementById('adminPinInput').value.trim();
             if (entered === adminPin) {
@@ -1237,7 +1279,6 @@
             }
         }
 
-        // إشعار كتابي بدون اسم أو تكلفة أو نوع توصيل
         function triggerOwnerNotifications() {
             playBellAlert2Sec();
 
@@ -1247,7 +1288,7 @@
                     body: 'يوجد طلب جديد متاح الآن في سجل الطلبات.',
                     icon: './images/logggo.jpg',
                     badge: './images/logggo.jpg',
-                    vibrate: [250, 100, 250, 100, 250],
+                    vibrate: [350, 150, 350, 150, 350],
                     tag: 'new-baba-order',
                     renotify: true
                 };
@@ -1264,53 +1305,66 @@
             }
         }
 
-        // رنة جرس متكررة وقوية مدتها ثانيتان فقط وتفصل تلقائياً
+        // جرس تنبيه قوي جداً، نفاذ وعالي لمدة ثانيتين
         function playBellAlert2Sec() {
             try {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
                 if (!AudioCtx) return;
                 const ctx = new AudioCtx();
 
-                function chime(startTime) {
-                    // المذبذب الأول: النغمة الأساسية للجرس
+                // مكبر صوت قوي مع ضاغط ديناميكي لزيادة الصوت لأقصى حد بدون شوشرة
+                const compressor = ctx.createDynamicsCompressor();
+                compressor.threshold.setValueAtTime(-10, ctx.currentTime);
+                compressor.knee.setValueAtTime(40, ctx.currentTime);
+                compressor.ratio.setValueAtTime(12, ctx.currentTime);
+                compressor.attack.setValueAtTime(0, ctx.currentTime);
+                compressor.release.setValueAtTime(0.25, ctx.currentTime);
+                compressor.connect(ctx.destination);
+
+                const masterGain = ctx.createGain();
+                masterGain.gain.setValueAtTime(2.5, ctx.currentTime); // تضخيم كبير
+                masterGain.connect(compressor);
+
+                function chimeStroke(startTime) {
+                    // تردد نفاذ 1 (1050 Hz)
                     const osc1 = ctx.createOscillator();
                     const gain1 = ctx.createGain();
-                    osc1.type = 'sine';
-                    osc1.frequency.setValueAtTime(880, startTime); // A5
-                    gain1.gain.setValueAtTime(0.7, startTime);
-                    gain1.gain.exponentialRampToValueAtTime(0.001, startTime + 0.38);
+                    osc1.type = 'square'; // موجة مربعة لصوت تنبيهي صارخ ومسموع بوضوح
+                    osc1.frequency.setValueAtTime(1050, startTime);
+                    gain1.gain.setValueAtTime(0.6, startTime);
+                    gain1.gain.exponentialRampToValueAtTime(0.001, startTime + 0.35);
                     osc1.connect(gain1);
-                    gain1.connect(ctx.destination);
+                    gain1.connect(masterGain);
                     osc1.start(startTime);
-                    osc1.stop(startTime + 0.38);
+                    osc1.stop(startTime + 0.35);
 
-                    // المذبذب الثاني: رنين التردد العالي المعدني للجرس
+                    // تردد جرس حاد 2 (2100 Hz)
                     const osc2 = ctx.createOscillator();
                     const gain2 = ctx.createGain();
-                    osc2.type = 'triangle';
-                    osc2.frequency.setValueAtTime(1760, startTime); // A6
-                    gain2.gain.setValueAtTime(0.4, startTime);
-                    gain2.gain.exponentialRampToValueAtTime(0.001, startTime + 0.3);
+                    osc2.type = 'sine';
+                    osc2.frequency.setValueAtTime(2100, startTime);
+                    gain2.gain.setValueAtTime(0.9, startTime);
+                    gain2.gain.exponentialRampToValueAtTime(0.001, startTime + 0.38);
                     osc2.connect(gain2);
-                    gain2.connect(ctx.destination);
+                    gain2.connect(masterGain);
                     osc2.start(startTime);
-                    osc2.stop(startTime + 0.3);
+                    osc2.stop(startTime + 0.38);
                 }
 
-                // 4 رنات جرس موزعة لتملأ ثانيتين فقط بدقة
-                const start = ctx.currentTime;
-                chime(start);
-                chime(start + 0.45);
-                chime(start + 0.90);
-                chime(start + 1.35);
+                // 4 رنات متتالية حادة تملأ الثانيتين تماماً
+                const now = ctx.currentTime;
+                chimeStroke(now);
+                chimeStroke(now + 0.45);
+                chimeStroke(now + 0.90);
+                chimeStroke(now + 1.35);
 
-                setTimeout(() => { ctx.close(); }, 2000);
+                setTimeout(() => { ctx.close(); }, 2050);
             } catch (err) {
                 console.log("Audio alert error", err);
             }
         }
 
-        // عرض سجل الطلبات
+        // عرض سجل الطلبات بشكل منسق ورأسي (بدون كود الطلب)
         function renderOrdersList() {
             const container = document.getElementById('ordersListContainer');
             const badge = document.getElementById('ordersCountBadge');
@@ -1323,23 +1377,44 @@
                 return;
             }
 
-            container.innerHTML = liveOrders.map(order => `
+            container.innerHTML = liveOrders.map(order => {
+                // استخراج الأصناف بتنسيق واضح
+                let itemsHtml = '';
+                if (Array.isArray(order.items)) {
+                    itemsHtml = order.items.map(it => {
+                        if (typeof it === 'object') {
+                            return `<div class="order-item-row"><span>${it.name}</span><span>${it.price} ج.م</span></div>`;
+                        } else {
+                            return `<div class="order-item-row"><span>${it}</span></div>`;
+                        }
+                    }).join('');
+                }
+
+                return `
                 <div class="order-card-box">
-                    <div class="order-card-top">
-                        <span class="order-id-tag">طلب: #${order.id.slice(-5).toUpperCase()} (${order.orderType})</span>
-                        <span class="order-time-tag">${order.dateStr || ''}</span>
+                    <div class="order-card-meta">
+                        <span class="order-type-chip">${order.orderType || 'طلب'}</span>
+                        <span class="order-time-chip">🕒 ${order.dateStr || ''}</span>
                     </div>
-                    <div class="order-user-info">
-                        👤 ${order.customerName} | 📱 <a href="tel:${order.customerPhone}" style="color:var(--accent); text-decoration:none;">${order.customerPhone}</a><br>
-                        📍 ${order.customerAddress}
+
+                    <div class="order-section-block">
+                        <div class="order-info-line"><span>👤 العميل:</span> <b>${order.customerName}</b></div>
+                        <div class="order-info-line"><span>📱 الهاتف:</span> <a href="tel:${order.customerPhone}">${order.customerPhone}</a></div>
+                        <div class="order-info-line"><span>📍 العنوان:</span> <b>${order.customerAddress}</b></div>
                     </div>
-                    <div class="order-items-summary">${order.items.join('\n')}</div>
-                    <div class="order-card-footer">
-                        <span class="order-total-price">الإجمالي: ${order.grandTotal} ج.م</span>
-                        <button type="button" class="delete-single-order" onclick="deleteSingleOrder('${order.id}')">حذف الطلب ✕</button>
+
+                    <div class="order-items-box">
+                        <span style="font-size: 0.76rem; color: var(--desc-text); font-weight: 800; margin-bottom: 2px;">تفاصيل الوجبات:</span>
+                        ${itemsHtml}
+                    </div>
+
+                    <div class="order-footer-details">
+                        <div class="order-total-price-tag">الإجمالي: ${order.grandTotal} ج.م</div>
+                        <button type="button" class="delete-single-order-btn" onclick="deleteSingleOrder('${order.id}')">حذف الطلب ✕</button>
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function deleteSingleOrder(orderId) {

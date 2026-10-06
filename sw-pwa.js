@@ -1,5 +1,5 @@
 // اسم الكاش الحالي (قم بتغيير الرقم عند عمل تحديثات كبيرة جداً في التصميم)
-const CACHE_NAME = 'burger-baba-v3';
+const CACHE_NAME = 'burger-baba-v4';
 
 // الملفات التي سيتم تخزينها لتعمل بدون إنترنت
 const ASSETS_TO_CACHE = [
