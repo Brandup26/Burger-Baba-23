@@ -243,7 +243,7 @@
         .user-fields input { background: var(--bg); border: none; padding: 16px; border-radius: 14px; width: 100%; margin-bottom: 10px; color: var(--main-text); text-align: right; font-weight: 600; }
         .submit-btn { background: #34c759; color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; font-size: 1rem; }
 
-        /* --- قسم إدارة المطعم في أسفل الصفحة تماماً (غير عائم) --- */
+        /* قسم إدارة المطعم في أسفل الصفحة تماماً */
         .bottom-admin-section {
             width: 100%;
             background: var(--white);
@@ -273,7 +273,7 @@
             box-shadow: 0 2px 6px rgba(211, 84, 0, 0.2);
         }
 
-        /* نافذة تسجيل الدخول الكريتيف للإدارة */
+        /* نافذة تسجيل الدخول للإدارة */
         .admin-login-modal {
             position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
             z-index: 999999; display: none; justify-content: center; align-items: center; padding: 20px;
@@ -455,7 +455,7 @@
         </div>
     </footer>
 
-    <!-- قسم الإدارة في أسفل التطبيق فقط (غير عائم) -->
+    <!-- قسم الإدارة في أسفل التطبيق فقط -->
     <div class="bottom-admin-section">
         <button type="button" class="bottom-admin-btn" onclick="openAdminPortal()">
             <span>🔐 لوحة إدارة المطعم</span>
@@ -1148,24 +1148,20 @@
         /* --- لوحة الإدارة، الحماية، والإشعارات --- */
 
         function initFirebaseListeners() {
-            // الاستماع لحالة المطعم
             db.ref('settings/restaurantStatus').on('value', (snap) => {
                 currentRestaurantStatus = snap.val() || "open";
                 updateRestaurantStatusUI();
             });
 
-            // الاستماع لكلمة السر
             db.ref('settings/adminPin').on('value', (snap) => {
                 if (snap.exists()) { adminPin = snap.val(); }
             });
 
-            // الاستماع لحالة الأصناف
             db.ref('itemsStatus').on('value', (snap) => {
                 currentItemsStatus = snap.val() || {};
                 applyFirebaseStatusToUI();
             });
 
-            // الاستماع للطلبات الواردة لحظياً لصاحب المطعم
             db.ref('orders').on('value', (snap) => {
                 const data = snap.val();
                 liveOrders = [];
@@ -1177,12 +1173,11 @@
                 }
                 renderOrdersList();
 
-                // التنبيه الصوتي والكتابي لصاحب المطعم فقط عند وصول طلب جديد
                 if (!isInitialOrdersLoad && isRestaurantOwner) {
                     snap.ref.limitToLast(1).once('child_added', (newOrderSnap) => {
                         const newOrder = newOrderSnap.val();
                         if (newOrder && (Date.now() - newOrder.timestamp < 15000)) {
-                            triggerOwnerNotifications(newOrder);
+                            triggerOwnerNotifications();
                         }
                     });
                 }
@@ -1190,7 +1185,6 @@
             });
         }
 
-        // فتح نافذة الإدارة أو الدخول المباشر إذا كان مسجلاً كصاحب مطعم
         function openAdminPortal() {
             if (isRestaurantOwner) {
                 openAdminPanel();
@@ -1205,7 +1199,6 @@
             document.getElementById('adminLoginModal').style.display = 'none';
         }
 
-        // تأكيد كلمة السر واعتبار المستخدم "صاحب مطعم"
         function verifyAdminPin() {
             const entered = document.getElementById('adminPinInput').value.trim();
             if (entered === adminPin) {
@@ -1238,72 +1231,80 @@
             document.getElementById('tabPassword').classList.toggle('active', tabKey === 'password');
         }
 
-        // طلب إذن الإشعارات للهاتف
         function requestNotificationPermission() {
             if ('Notification' in window && Notification.permission !== 'granted') {
                 Notification.requestPermission();
             }
         }
 
-        // إطلاق التنبيه المزدوج (صوت جرس متكرر لمدة ثانيتين + إشعار مكتوب)
-        function triggerOwnerNotifications(order) {
+        // إشعار كتابي بدون اسم أو تكلفة أو نوع توصيل
+        function triggerOwnerNotifications() {
             playBellAlert2Sec();
 
             if ('Notification' in window && Notification.permission === 'granted') {
+                const notifTitle = 'تم طلب أوردر جديد من أبلكيشن برجر بابا 🍔';
+                const notifOptions = {
+                    body: 'يوجد طلب جديد متاح الآن في سجل الطلبات.',
+                    icon: './images/logggo.jpg',
+                    badge: './images/logggo.jpg',
+                    vibrate: [250, 100, 250, 100, 250],
+                    tag: 'new-baba-order',
+                    renotify: true
+                };
+
                 try {
-                    navigator.serviceWorker.ready.then(registration => {
-                        registration.showNotification('تم طلب أوردر جديد من أبلكيشن برجر بابا 🍔', {
-                            body: `👤 العميل: ${order.customerName}\n💰 الإجمالي: ${order.grandTotal} ج.م (${order.orderType})`,
-                            icon: './images/logggo.jpg',
-                            badge: './images/logggo.jpg',
-                            vibrate: [300, 150, 300, 150, 300],
-                            tag: 'new-baba-order',
-                            renotify: true
-                        });
+                    navigator.serviceWorker.ready.then(reg => {
+                        reg.showNotification(notifTitle, notifOptions);
                     }).catch(() => {
-                        new Notification('تم طلب أوردر جديد من أبلكيشن برجر بابا 🍔', {
-                            body: `👤 العميل: ${order.customerName} - الإجمالي: ${order.grandTotal} ج.م`,
-                            icon: './images/logggo.jpg'
-                        });
+                        new Notification(notifTitle, notifOptions);
                     });
                 } catch(e) {
-                    console.log('Notification error:', e);
+                    new Notification(notifTitle, notifOptions);
                 }
             }
         }
 
-        // توليد صوت جرس عالي ونقي متكرر لمدة ثانيتين فقط يفصل تلقائياً
+        // رنة جرس متكررة وقوية مدتها ثانيتان فقط وتفصل تلقائياً
         function playBellAlert2Sec() {
             try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return;
-                const ctx = new AudioContext();
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
 
-                function ringBell(startTime) {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
+                function chime(startTime) {
+                    // المذبذب الأول: النغمة الأساسية للجرس
+                    const osc1 = ctx.createOscillator();
+                    const gain1 = ctx.createGain();
+                    osc1.type = 'sine';
+                    osc1.frequency.setValueAtTime(880, startTime); // A5
+                    gain1.gain.setValueAtTime(0.7, startTime);
+                    gain1.gain.exponentialRampToValueAtTime(0.001, startTime + 0.38);
+                    osc1.connect(gain1);
+                    gain1.connect(ctx.destination);
+                    osc1.start(startTime);
+                    osc1.stop(startTime + 0.38);
 
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(880, startTime);
-                    osc.frequency.exponentialRampToValueAtTime(1760, startTime + 0.08);
-
-                    gain.gain.setValueAtTime(1.0, startTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.35);
-
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-
-                    osc.start(startTime);
-                    osc.stop(startTime + 0.36);
+                    // المذبذب الثاني: رنين التردد العالي المعدني للجرس
+                    const osc2 = ctx.createOscillator();
+                    const gain2 = ctx.createGain();
+                    osc2.type = 'triangle';
+                    osc2.frequency.setValueAtTime(1760, startTime); // A6
+                    gain2.gain.setValueAtTime(0.4, startTime);
+                    gain2.gain.exponentialRampToValueAtTime(0.001, startTime + 0.3);
+                    osc2.connect(gain2);
+                    gain2.connect(ctx.destination);
+                    osc2.start(startTime);
+                    osc2.stop(startTime + 0.3);
                 }
 
-                const now = ctx.currentTime;
-                ringBell(now);
-                ringBell(now + 0.45);
-                ringBell(now + 0.90);
-                ringBell(now + 1.35);
+                // 4 رنات جرس موزعة لتملأ ثانيتين فقط بدقة
+                const start = ctx.currentTime;
+                chime(start);
+                chime(start + 0.45);
+                chime(start + 0.90);
+                chime(start + 1.35);
 
-                setTimeout(() => { ctx.close(); }, 2100);
+                setTimeout(() => { ctx.close(); }, 2000);
             } catch (err) {
                 console.log("Audio alert error", err);
             }
@@ -1356,7 +1357,6 @@
             }
         }
 
-        // تغيير كلمة السر مع التحقق
         function processChangePin() {
             const cur = document.getElementById('currentPinInput').value.trim();
             const nw = document.getElementById('newPinInput').value.trim();
